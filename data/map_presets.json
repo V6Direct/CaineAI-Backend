@@ -1,0 +1,171 @@
+{
+  "presets": [
+    {
+      "id": "void_cathedral",
+      "name": "The Void Cathedral",
+      "caine_intro": "Welcome to my cathedral. I built it from your doubts.",
+      "theme": {"theme": "void cathedral", "color": "#000011"},
+      "light": "#0044FF",
+      "player_spawn": [0, 0],
+      "structures": [
+        {"type": "SPAWN_STRUCTURE", "data": {"structure": "tower", "position": [6, 0, 6], "color": "#220044"}},
+        {"type": "SPAWN_STRUCTURE", "data": {"structure": "tower", "position": [-6, 0, 6], "color": "#220044"}},
+        {"type": "SPAWN_STRUCTURE", "data": {"structure": "tower", "position": [6, 0, -6], "color": "#220044"}},
+        {"type": "SPAWN_STRUCTURE", "data": {"structure": "tower", "position": [-6, 0, -6], "color": "#220044"}},
+        {"type": "SPAWN_STRUCTURE", "data": {"structure": "ring", "position": [0, 0, 0], "color": "#4400AA"}},
+        {"type": "SPAWN_STRUCTURE", "data": {"structure": "platform_stack", "position": [0, 0, 0], "color": "#110033"}}
+      ],
+      "props": [
+        {"pos": [0, 0, 0],   "type": "box",      "size": [1.5, 2.5, 1.5], "color": "#110011"},
+        {"pos": [3, 0, 0],   "type": "box",      "size": [0.4, 6.0, 0.4], "color": "#6600FF"},
+        {"pos": [-3, 0, 0],  "type": "box",      "size": [0.4, 6.0, 0.4], "color": "#6600FF"},
+        {"pos": [0, 0, 3],   "type": "box",      "size": [0.4, 6.0, 0.4], "color": "#6600FF"},
+        {"pos": [0, 0, -3],  "type": "box",      "size": [0.4, 6.0, 0.4], "color": "#6600FF"},
+        {"pos": [0, 5, 0],   "type": "platform", "size": [2.0, 0.3, 2.0], "color": "#330055"}
+      ],
+      "entities": [
+        {"name": "screaming portrait", "style": "surreal", "position": [4, 2]},
+        {"name": "chandelier made of fingers", "style": "dreamlike", "position": [-4, -2]},
+        {"name": "statue weeping neon tears", "style": "neon", "position": [2, -4]}
+      ]
+    },
+    {
+      "id": "neon_circus",
+      "name": "The Neon Circus",
+      "caine_intro": "Roll up, roll up. The show never ends here. Never.",
+      "theme": {"theme": "infinite circus", "color": "#1A0033"},
+      "light": "#FF00FF",
+      "player_spawn": [0, 0],
+      "structures": [
+        {"type": "SPAWN_STRUCTURE", "data": {"structure": "ring", "position": [0, 0, 0], "color": "#FF00AA"}},
+        {"type": "SPAWN_STRUCTURE", "data": {"structure": "ring", "position": [0, 0, 0], "color": "#AA00FF"}},
+        {"type": "SPAWN_STRUCTURE", "data": {"structure": "maze_wall", "position": [8, 0, 0], "color": "#FF0066"}},
+        {"type": "SPAWN_STRUCTURE", "data": {"structure": "maze_wall", "position": [-8, 0, 0], "color": "#FF0066"}},
+        {"type": "SPAWN_STRUCTURE", "data": {"structure": "tower", "position": [0, 0, 10], "color": "#CC00FF"}}
+      ],
+      "props": [
+        {"pos": [0, 0, 0],    "type": "platform", "size": [5.0, 0.4, 5.0], "color": "#330022"},
+        {"pos": [5, 2, 5],    "type": "platform", "size": [3.0, 0.3, 3.0], "color": "#440033"},
+        {"pos": [-5, 4, -5],  "type": "platform", "size": [2.0, 0.3, 2.0], "color": "#550044"},
+        {"pos": [0, 6, 0],    "type": "platform", "size": [2.0, 0.3, 2.0], "color": "#660055"},
+        {"pos": [8, 0, 8],    "type": "box",      "size": [0.6, 4.0, 0.6], "color": "#FF00FF"},
+        {"pos": [-8, 0, -8],  "type": "box",      "size": [0.6, 4.0, 0.6], "color": "#FF00FF"}
+      ],
+      "entities": [
+        {"name": "pink balloon dog",  "style": "cartoon",  "position": [3, 3]},
+        {"name": "floating top hat",  "style": "surreal",  "position": [-3, 3]},
+        {"name": "rubber chicken",    "style": "cartoon",  "position": [0, -5]},
+        {"name": "neon jellyfish",    "style": "neon",     "position": [5, -2]}
+      ]
+    },
+    {
+      "id": "mirror_palace",
+      "name": "The Mirror Palace",
+      "caine_intro": "Every reflection here is wrong. Including yours.",
+      "theme": {"theme": "mirror palace", "color": "#0A0A1A"},
+      "light": "#00FFFF",
+      "player_spawn": [0, 0],
+      "structures": [
+        {"type": "SPAWN_STRUCTURE", "data": {"structure": "maze_wall", "position": [0, 0, 4],  "color": "#003344"}},
+        {"type": "SPAWN_STRUCTURE", "data": {"structure": "maze_wall", "position": [0, 0, -4], "color": "#003344"}},
+        {"type": "SPAWN_STRUCTURE", "data": {"structure": "maze_wall", "position": [0, 0, 8],  "color": "#004455"}},
+        {"type": "SPAWN_STRUCTURE", "data": {"structure": "maze_wall", "position": [0, 0, -8], "color": "#004455"}},
+        {"type": "SPAWN_STRUCTURE", "data": {"structure": "ring",      "position": [0, 0, 0],  "color": "#006677"}}
+      ],
+      "props": [
+        {"pos": [2, 0, 0],   "type": "box",      "size": [0.2, 4.0, 4.0], "color": "#00FFFF"},
+        {"pos": [-2, 0, 0],  "type": "box",      "size": [0.2, 4.0, 4.0], "color": "#00FFFF"},
+        {"pos": [6, 0, 0],   "type": "box",      "size": [0.2, 4.0, 4.0], "color": "#008888"},
+        {"pos": [-6, 0, 0],  "type": "box",      "size": [0.2, 4.0, 4.0], "color": "#008888"},
+        {"pos": [0, 3, 0],   "type": "platform", "size": [3.0, 0.2, 3.0], "color": "#001122"}
+      ],
+      "entities": [
+        {"name": "laughing mirror",               "style": "glitchy",   "position": [4, 0]},
+        {"name": "mirror showing wrong reflection","style": "dreamlike", "position": [-4, 0]},
+        {"name": "portrait whose eyes follow you","style": "surreal",   "position": [0, 4]}
+      ]
+    },
+    {
+      "id": "carnival_end",
+      "name": "Carnival at the End of Time",
+      "caine_intro": "The last carnival. The rides still work. The people don't.",
+      "theme": {"theme": "carnival end", "color": "#1A0A00"},
+      "light": "#FF4500",
+      "player_spawn": [-5, -5],
+      "structures": [
+        {"type": "SPAWN_STRUCTURE", "data": {"structure": "platform_stack", "position": [-8, 0, -8], "color": "#331100"}},
+        {"type": "SPAWN_STRUCTURE", "data": {"structure": "platform_stack", "position": [8, 0, 8],   "color": "#441100"}},
+        {"type": "SPAWN_STRUCTURE", "data": {"structure": "maze_wall",      "position": [0, 0, 6],   "color": "#552200"}},
+        {"type": "SPAWN_STRUCTURE", "data": {"structure": "maze_wall",      "position": [0, 0, -6],  "color": "#552200"}},
+        {"type": "SPAWN_STRUCTURE", "data": {"structure": "tower",          "position": [0, 0, 0],   "color": "#FF2200"}}
+      ],
+      "props": [
+        {"pos": [0, 0, 0],    "type": "box",      "size": [3.0, 0.5, 3.0], "color": "#220800"},
+        {"pos": [4, 0.5, 0],  "type": "box",      "size": [1.0, 2.0, 1.0], "color": "#FF4400"},
+        {"pos": [-4, 0.5, 0], "type": "box",      "size": [1.0, 2.0, 1.0], "color": "#FF4400"},
+        {"pos": [0, 0, 4],    "type": "box",      "size": [1.0, 2.0, 1.0], "color": "#FF4400"},
+        {"pos": [0, 0, -4],   "type": "box",      "size": [1.0, 2.0, 1.0], "color": "#FF4400"}
+      ],
+      "entities": [
+        {"name": "rusted ferris wheel cart",  "style": "glitchy",  "position": [6, 0]},
+        {"name": "carousel with no horses",   "style": "surreal",  "position": [-6, 0]},
+        {"name": "melting clock",             "style": "dreamlike","position": [0, 6]}
+      ]
+    },
+    {
+      "id": "dream_staircase",
+      "name": "The Infinite Staircase",
+      "caine_intro": "Every step goes up. None of them arrive anywhere. Perfect.",
+      "theme": {"theme": "dream staircase", "color": "#0D0022"},
+      "light": "#AA44FF",
+      "player_spawn": [0, 0],
+      "structures": [
+        {"type": "SPAWN_STRUCTURE", "data": {"structure": "platform_stack", "position": [0,  0, 0],  "color": "#220044"}},
+        {"type": "SPAWN_STRUCTURE", "data": {"structure": "platform_stack", "position": [4,  0, 4],  "color": "#330055"}},
+        {"type": "SPAWN_STRUCTURE", "data": {"structure": "platform_stack", "position": [-4, 0, -4], "color": "#440066"}},
+        {"type": "SPAWN_STRUCTURE", "data": {"structure": "platform_stack", "position": [8,  0, 0],  "color": "#550077"}},
+        {"type": "SPAWN_STRUCTURE", "data": {"structure": "tower",          "position": [0,  0, 8],  "color": "#6600AA"}}
+      ],
+      "props": [
+        {"pos": [2,  1.5, 2],  "type": "platform", "size": [2.0, 0.3, 2.0], "color": "#3300AA"},
+        {"pos": [-2, 3.0, -2], "type": "platform", "size": [2.0, 0.3, 2.0], "color": "#4400BB"},
+        {"pos": [4,  4.5, 0],  "type": "platform", "size": [2.0, 0.3, 2.0], "color": "#5500CC"},
+        {"pos": [0,  6.0, 4],  "type": "platform", "size": [2.0, 0.3, 2.0], "color": "#6600DD"},
+        {"pos": [6,  0,   6],  "type": "box",      "size": [0.5, 7.0, 0.5], "color": "#AA00FF"}
+      ],
+      "entities": [
+        {"name": "spiral staircase to nowhere", "style": "dreamlike", "position": [2, 2]},
+        {"name": "floating eyeball",            "style": "surreal",   "position": [-3, 3]},
+        {"name": "clockwork butterfly",         "style": "cartoon",   "position": [4, -2]}
+      ]
+    },
+    {
+      "id": "neon_wasteland",
+      "name": "The Neon Wasteland",
+      "caine_intro": "The signal died here. But I kept the lights on. For you.",
+      "theme": {"theme": "neon wasteland", "color": "#001A00"},
+      "light": "#00FF88",
+      "player_spawn": [0, 0],
+      "structures": [
+        {"type": "SPAWN_STRUCTURE", "data": {"structure": "maze_wall", "position": [0,  0, 5],  "color": "#004400"}},
+        {"type": "SPAWN_STRUCTURE", "data": {"structure": "maze_wall", "position": [0,  0, -5], "color": "#004400"}},
+        {"type": "SPAWN_STRUCTURE", "data": {"structure": "maze_wall", "position": [5,  0, 0],  "color": "#005500"}},
+        {"type": "SPAWN_STRUCTURE", "data": {"structure": "maze_wall", "position": [-5, 0, 0],  "color": "#005500"}},
+        {"type": "SPAWN_STRUCTURE", "data": {"structure": "ring",      "position": [0,  0, 0],  "color": "#00FF00"}}
+      ],
+      "props": [
+        {"pos": [0,  0, 0],   "type": "box",      "size": [1.0, 3.0, 1.0], "color": "#00FF44"},
+        {"pos": [3,  0, 3],   "type": "box",      "size": [0.4, 5.0, 0.4], "color": "#00AA44"},
+        {"pos": [-3, 0, -3],  "type": "box",      "size": [0.4, 5.0, 0.4], "color": "#00AA44"},
+        {"pos": [3,  0, -3],  "type": "box",      "size": [0.4, 5.0, 0.4], "color": "#008844"},
+        {"pos": [-3, 0, 3],   "type": "box",      "size": [0.4, 5.0, 0.4], "color": "#008844"},
+        {"pos": [0,  0, 0],   "type": "platform", "size": [4.0, 0.2, 4.0], "color": "#002200"}
+      ],
+      "entities": [
+        {"name": "glitch cube",       "style": "glitchy", "position": [5, 0]},
+        {"name": "neon jellyfish",    "style": "neon",    "position": [-5, 0]},
+        {"name": "broken television", "style": "glitchy", "position": [0, 5]}
+      ]
+    }
+  ]
+}

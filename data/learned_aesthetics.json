@@ -1,0 +1,21 @@
+[
+  {
+    "source": "red_white_circus_outside.png",
+    "mood": "urgent and primal",
+    "colors": [
+      "#CC0000",
+      "#880000",
+      "#FF0000",
+      "#CC0033"
+    ],
+    "shapes": [],
+    "lighting": "ambient diffused",
+    "keywords": [
+      "red",
+      "white",
+      "circus",
+      "outside"
+    ],
+    "summary": "Filename-learned: red white circus outside"
+  }
+]

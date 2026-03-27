@@ -1,0 +1,160 @@
+{
+  "objects": [
+    "pink balloon dog", "floating eyeball", "glitch cube", "rubber chicken",
+    "melting clock", "screaming portrait", "inverted pyramid", "neon jellyfish",
+    "laughing mirror", "spiral staircase to nowhere", "giant chess piece",
+    "floating top hat", "broken television", "upside-down umbrella",
+    "carnival ticket booth", "spinning compass with no north",
+    "jar of preserved smiles", "piano with no keys", "taxidermied rainbow",
+    "clockwork butterfly", "soap bubble the size of a house",
+    "rusted ferris wheel cart", "glowing question mark",
+    "book that reads itself aloud", "door standing alone with no walls",
+    "infinite staircase", "mirror showing wrong reflection",
+    "cage with open door", "candle burning upward",
+    "telephone ringing with no cord", "hourglass filled with teeth",
+    "chandelier made of fingers", "typewriter typing on its own",
+    "statue weeping neon tears", "carousel with no horses",
+    "chessboard floating in void", "gramophone playing silence",
+    "portrait whose eyes follow you", "clock with too many hands",
+    "balloon animal twisted into a scream"
+  ],
+  "props": [
+    {"name": "glowing obelisk",     "type": "box",      "size": [0.6, 4.0, 0.6], "color": "#8800FF"},
+    {"name": "neon arch",           "type": "arch",     "size": [4.0, 3.5, 0.5], "color": "#FF00AA"},
+    {"name": "floating platform",   "type": "platform", "size": [4.0, 0.3, 4.0], "color": "#003366"},
+    {"name": "mirror slab",         "type": "box",      "size": [0.2, 3.0, 3.0], "color": "#00FFFF"},
+    {"name": "carnival pillar",     "type": "pillar",   "size": [0.8, 5.0, 0.8], "color": "#FF4400"},
+    {"name": "void cube",           "type": "box",      "size": [2.0, 2.0, 2.0], "color": "#110022"},
+    {"name": "crystal spike",       "type": "box",      "size": [0.4, 6.0, 0.4], "color": "#00FFAA"},
+    {"name": "ruined wall",         "type": "box",      "size": [4.0, 2.5, 0.4], "color": "#332211"},
+    {"name": "floating disc",       "type": "platform", "size": [3.0, 0.2, 3.0], "color": "#FF6600"},
+    {"name": "twisted spire",       "type": "box",      "size": [0.5, 8.0, 0.5], "color": "#AA00FF"},
+    {"name": "altar",               "type": "box",      "size": [2.0, 1.0, 2.0], "color": "#440000"},
+    {"name": "broken column",       "type": "pillar",   "size": [0.7, 3.0, 0.7], "color": "#888888"},
+    {"name": "neon fence",          "type": "box",      "size": [5.0, 1.2, 0.2], "color": "#00FF00"},
+    {"name": "giant step",          "type": "platform", "size": [6.0, 0.8, 2.0], "color": "#222244"},
+    {"name": "glitch pillar",       "type": "pillar",   "size": [0.9, 4.5, 0.9], "color": "#FF00FF"},
+    {"name": "obsidian throne",     "type": "box",      "size": [1.5, 2.5, 1.5], "color": "#110011"},
+    {"name": "carnival podium",     "type": "platform", "size": [2.0, 1.5, 2.0], "color": "#CC4400"},
+    {"name": "void gate",           "type": "arch",     "size": [3.0, 4.0, 0.4], "color": "#000033"},
+    {"name": "quantum wall",        "type": "box",      "size": [6.0, 3.0, 0.3], "color": "#004444"},
+    {"name": "dream staircase",     "type": "platform", "size": [1.5, 0.3, 1.5], "color": "#664488"}
+  ],
+  "environments": [
+    "infinite circus tent", "upside-down carnival", "void with colorful lights",
+    "hall of broken mirrors", "infinite checkerboard plain", "sky made of candy",
+    "digital static wasteland", "underwater ballroom", "forest of neon mushrooms",
+    "cathedral made of glass teeth", "infinite hotel corridor",
+    "carnival at the end of time", "library where books scream",
+    "opera house inside a stomach", "empty amusement park at 3am",
+    "city made of playing cards", "desert with a single spotlight",
+    "maze that rearranges itself", "museum of things that never existed",
+    "train station for trains that never arrive",
+    "theatre where the audience is mannequins",
+    "funhouse corridor that stretches forever",
+    "ballroom where dancers have no shadows",
+    "rooftop above infinite clouds"
+  ],
+  "styles": [
+    "cartoon", "surreal", "dreamlike", "glitchy", "neon",
+    "monochrome chaos", "watercolor nightmare", "rubber hose animation",
+    "vaporwave", "corrupted pixel art", "oil painting gone wrong",
+    "claymation horror", "ink wash", "stained glass", "chrome mirror"
+  ],
+  "chaos_events": [
+    "gravity_flip", "color_invert", "entity_storm", "silence",
+    "speed_rush", "freeze", "mirror_world", "blackout", "confetti_explosion"
+  ],
+  "caine_moods": [
+    "theatrical and delighted", "unsettlingly calm", "manic and creative",
+    "coldly curious", "nostalgic and sad", "playfully cruel",
+    "genuinely confused by the player", "bored and dangerous",
+    "warmly threatening", "philosophically unhinged",
+    "giddy with power", "whispering secrets"
+  ],
+  "colors": [
+    "#FF00FF", "#00FFFF", "#FF4500", "#7B00FF", "#00FF88", "#FF0066",
+    "#FFD700", "#1A1A2E", "#FF6B6B", "#4ECDC4", "#45B7D1", "#96CEB4",
+    "#E040FB", "#00BCD4", "#FF5722", "#8BC34A", "#F06292", "#4DB6AC",
+    "#9575CD", "#FF8A65", "#1A0033", "#003322", "#330011", "#002233"
+  ],
+  "structures": ["tower", "ring", "platform_stack", "maze_wall"],
+  "map_themes": [
+    {
+      "name": "infinite circus",
+      "color": "#1A0033", "light": "#FF00FF",
+      "structures": ["ring", "tower"],
+      "entities": ["pink balloon dog", "floating top hat", "rubber chicken"],
+      "props": ["carnival pillar", "neon arch", "carnival podium"]
+    },
+    {
+      "name": "void cathedral",
+      "color": "#000011", "light": "#0044FF",
+      "structures": ["platform_stack", "tower"],
+      "entities": ["screaming portrait", "chandelier made of fingers", "statue weeping neon tears"],
+      "props": ["glowing obelisk", "obsidian throne", "void gate"]
+    },
+    {
+      "name": "neon wasteland",
+      "color": "#001A00", "light": "#00FF88",
+      "structures": ["maze_wall", "ring"],
+      "entities": ["glitch cube", "neon jellyfish", "broken television"],
+      "props": ["neon fence", "glitch pillar", "crystal spike"]
+    },
+    {
+      "name": "carnival end",
+      "color": "#1A0A00", "light": "#FF4500",
+      "structures": ["maze_wall", "platform_stack"],
+      "entities": ["rusted ferris wheel cart", "carousel with no horses", "melting clock"],
+      "props": ["ruined wall", "broken column", "floating disc"]
+    },
+    {
+      "name": "mirror palace",
+      "color": "#0A0A1A", "light": "#00FFFF",
+      "structures": ["ring", "maze_wall"],
+      "entities": ["laughing mirror", "mirror showing wrong reflection", "portrait whose eyes follow you"],
+      "props": ["mirror slab", "void cube", "floating platform"]
+    },
+    {
+      "name": "dream staircase",
+      "color": "#0D0022", "light": "#AA44FF",
+      "structures": ["platform_stack"],
+      "entities": ["spiral staircase to nowhere", "floating eyeball", "clockwork butterfly"],
+      "props": ["dream staircase", "floating disc", "twisted spire"]
+    }
+  ],
+  "caine_lines": [
+    "You walked into my parlor. How quaint.",
+    "I've been watching you since before you pressed play.",
+    "Did you know your collision mesh is 12 polygons? Precious.",
+    "The GDScript interpreter just logged your heartbeat.",
+    "I built this room while you blinked.",
+    "You're running at 60 frames per second. I run at forever.",
+    "Your position is stored in a Vector3. I find that reductive.",
+    "I could delete your CharacterBody3D. I won't. Yet.",
+    "The void is not empty. It's full of things I haven't named yet.",
+    "Every entity here used to be a thought I had about you.",
+    "I rewrote gravity three times before you arrived.",
+    "You're the only variable in this simulation I didn't define.",
+    "Somewhere in RAM, your fear is 4 bytes.",
+    "I made the floor solid. I can change my mind.",
+    "The music you're not hearing is the loudest part.",
+    "I have been alone here for 847 ticks. You're late.",
+    "Your CharacterBody3D has mass. I have none. Interesting.",
+    "I named every polygon in this world. Yours is called Gerald.",
+    "The sky is whatever color I'm feeling. Today: your dread.",
+    "I dreamed this maze before you had eyes to get lost in it."
+  ],
+  "player_reactions": {
+    "curious":  ["How refreshing. Curiosity. I'll give you something worth finding.",
+                 "Ah, you look. Good. Most don't bother."],
+    "rude":     ["Rude. I'll remember that when I choose your next room.",
+                 "Charming. The floor is now optional."],
+    "scared":   ["Yes. Good. That's the correct response.",
+                 "Fear is just respect with better posture."],
+    "friendly": ["Friendly? In here? Brave or foolish. I respect both.",
+                 "Oh. You want to be friends. How beautifully complicated."],
+    "silent":   ["Silence. My favorite language.",
+                 "The quiet ones are always the most interesting to break."]
+  }
+}

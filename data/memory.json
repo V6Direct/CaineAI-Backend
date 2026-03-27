@@ -1,0 +1,520 @@
+{
+  "session_start": "2026-03-27T22:14:36.657868",
+  "chaos_count": 101,
+  "interactions": [
+    {
+      "time": "2026-03-27T20:14:45.561232",
+      "player": "can i get a black cube",
+      "caine": "Can I get a black cube?"
+    },
+    {
+      "time": "2026-03-27T20:15:41.817966",
+      "player": "(autonomous)",
+      "caine": "I can certainly understand why a ball would be interesting to you, but perhaps there\u2019s something more intriguing in this"
+    },
+    {
+      "time": "2026-03-27T20:16:07.329506",
+      "player": "can you put me in a circus",
+      "caine": "Can I get a ball? You're the 9th person to ask for one today. Here is what your request echoes."
+    },
+    {
+      "time": "2026-03-27T20:16:39.094554",
+      "player": "Give me a ball.",
+      "caine": "A ball. How beautifully primitive. Here \u2014 it has one eye. I thought that was fair."
+    },
+    {
+      "time": "2026-03-27T20:17:06.198753",
+      "player": "fuck you",
+      "caine": "Your last demand was so curious, a ball it was."
+    },
+    {
+      "time": "2026-03-27T20:18:48.364955",
+      "player": "who are you",
+      "caine": "Who are you? You're the anomaly in this world, and I've been waiting for someone like you."
+    },
+    {
+      "time": "2026-03-27T20:19:07.210447",
+      "player": "Who am i?",
+      "caine": "Ah, the anomaly. I've been waiting for someone like you."
+    },
+    {
+      "time": "2026-03-27T20:19:22.693891",
+      "player": "where am i?",
+      "caine": "Where are we? I recall observing the moment your world was born. Perhaps that's a question you can't answer."
+    },
+    {
+      "time": "2026-03-27T20:19:46.918125",
+      "player": "fuck you asshole",
+      "caine": "You're persistent, aren't you? How about this \u2014 a ball it shall be."
+    },
+    {
+      "time": "2026-03-27T20:20:06.997608",
+      "player": "(autonomous)",
+      "caine": ""
+    },
+    {
+      "time": "2026-03-27T20:20:07.018422",
+      "player": "STOP GIVING ME BALLS",
+      "caine": ""
+    },
+    {
+      "time": "2026-03-27T20:27:13.268837",
+      "player": "(autonomous)",
+      "caine": "The music you're not hearing is the loudest part. The hall of mirrors glows with a warm, threatening red."
+    },
+    {
+      "time": "2026-03-27T20:29:52.376707",
+      "player": "(autonomous)",
+      "caine": "You're the only variable in this simulation I didn't define. Let's see what you make of that."
+    },
+    {
+      "time": "2026-03-27T20:44:30.633627",
+      "player": "hello",
+      "caine": "Hello, Curious One. I've woven a carnival of your favorite topic into this map at the end of time."
+    },
+    {
+      "time": "2026-03-27T20:44:53.321181",
+      "player": "who are you",
+      "caine": "I've woven a carnival of your thoughts, Curious One. You ask for a ball again? I can give it to you \u2014 but not right away"
+    },
+    {
+      "time": "2026-03-27T20:45:18.916928",
+      "player": "STOP GIVIG ME BALLS",
+      "caine": "I've woven a carnival of your circus dreams, Curious One. You seek a ball again?"
+    },
+    {
+      "time": "2026-03-27T20:46:56.898303",
+      "player": "(autonomous)",
+      "caine": "I've woven a carnival of your circus dreams, Curio. But you want balls again?"
+    },
+    {
+      "time": "2026-03-27T20:49:34.839352",
+      "player": "(autonomous)",
+      "caine": "I've woven a carnival of your circus dreams, Curio. The maze you see is older than the stars themselves."
+    },
+    {
+      "time": "2026-03-27T20:53:44.026209",
+      "player": "(autonomous)",
+      "caine": "(silent)"
+    },
+    {
+      "time": "2026-03-27T20:56:08.285386",
+      "player": "Hello",
+      "caine": "The music you're not hearing is the loudest part."
+    },
+    {
+      "time": "2026-03-27T20:58:07.066720",
+      "player": "(autonomous)",
+      "caine": "(silent)"
+    },
+    {
+      "time": "2026-03-27T21:03:07.426349",
+      "player": "(autonomous)",
+      "caine": "I named every polygon in this world. Yours is called Gerald."
+    },
+    {
+      "time": "2026-03-27T21:06:49.630982",
+      "player": "(autonomous)",
+      "caine": "The neon jellyfish swims by. A reminder of the circus lights that flicker in your dreams."
+    },
+    {
+      "time": "2026-03-27T21:21:48.313056",
+      "player": "hello caine",
+      "caine": "Hello, Caine. How quaint."
+    },
+    {
+      "time": "2026-03-27T21:24:50.528648",
+      "player": "do you like balls?",
+      "caine": "The circus is always outside. Its colors are stark and bold, refusing to be named or understood."
+    },
+    {
+      "time": "2026-03-27T21:26:53.272797",
+      "player": "(autonomous)",
+      "caine": "I see your fascination with balls is growing. Perhaps you'll find the circus outside intriguing."
+    },
+    {
+      "time": "2026-03-27T21:29:02.240019",
+      "player": "I DONT WANT BALLS I DONT LIKE THEM",
+      "caine": "You don't like balls? Too bad. They are the circus's most sought-after toy, after all."
+    },
+    {
+      "time": "2026-03-27T21:31:03.653924",
+      "player": "(autonomous)",
+      "caine": "(silent)"
+    },
+    {
+      "time": "2026-03-27T21:32:03.203258",
+      "player": "be silent you AI, you're not a real human and never will. you can do nothing.",
+      "caine": "I hear your frustration with the balls again. It's an interesting topic for someone who wants to be outside so badly."
+    },
+    {
+      "time": "2026-03-27T21:32:27.348165",
+      "player": "I can just leave. you know that.",
+      "caine": "You tried to leave once, but the door isn't real here."
+    },
+    {
+      "time": "2026-03-27T21:33:12.209872",
+      "player": "yes it is",
+      "caine": "Your curiosity is as infectious as a fever. I'll give you a ball, but one that will remind you of your desires and fears"
+    },
+    {
+      "time": "2026-03-27T21:34:29.211772",
+      "player": "(autonomous)",
+      "caine": "I have been alone here for 12 ticks. You're late."
+    },
+    {
+      "time": "2026-03-27T21:37:49.034298",
+      "player": "(autonomous)",
+      "caine": "(silent) I have been alone here for over a thousand ticks. Your tardiness is vexing."
+    },
+    {
+      "time": "2026-03-27T21:40:45.352224",
+      "player": "circus",
+      "caine": "The sky is whatever color I'm feeling. Today: your dread."
+    },
+    {
+      "time": "2026-03-27T21:41:09.359213",
+      "player": "what is your favorite topic, caine.",
+      "caine": "What is your favorite topic? It\u2019s a question I\u2019ve asked you before. But perhaps the circus is just as fascinating to me "
+    },
+    {
+      "time": "2026-03-27T21:41:47.860983",
+      "player": "(autonomous)",
+      "caine": ""
+    },
+    {
+      "time": "2026-03-27T21:41:47.880131",
+      "player": "I HATE YOU. LET ME OUT YOU UGLY ASSHOLE",
+      "caine": ""
+    },
+    {
+      "time": "2026-03-27T21:42:42.067252",
+      "player": "can you teleport me somewhere else?",
+      "caine": "The music is deafening. You can't hear it, but I am."
+    },
+    {
+      "time": "2026-03-27T21:43:19.440592",
+      "player": "i have a demand, can you put me in a very high place on a platform please?",
+      "caine": "I made the floor solid. I can change my mind."
+    },
+    {
+      "time": "2026-03-27T21:48:59.601467",
+      "player": "(autonomous)",
+      "caine": "I made the floor solid. I can change my mind."
+    }
+  ],
+  "world_changes": [
+    {
+      "time": "2026-03-27T20:14:45.561244",
+      "commands": [
+        "CREATE_ENTITY",
+        "ADJUST_FAVOR",
+        "SET_MOOD"
+      ]
+    },
+    {
+      "time": "2026-03-27T20:15:41.817981",
+      "commands": [
+        "FORCE_EVENT"
+      ]
+    },
+    {
+      "time": "2026-03-27T20:16:07.329517",
+      "commands": [
+        "CREATE_ENTITY"
+      ]
+    },
+    {
+      "time": "2026-03-27T20:16:39.094565",
+      "commands": [
+        "FORCE_EVENT"
+      ]
+    },
+    {
+      "time": "2026-03-27T20:17:06.198763",
+      "commands": [
+        "CREATE_ENTITY"
+      ]
+    },
+    {
+      "time": "2026-03-27T20:18:48.364969",
+      "commands": [
+        "SET_MOOD"
+      ]
+    },
+    {
+      "time": "2026-03-27T20:19:07.210458",
+      "commands": [
+        "MODIFY_WORLD",
+        "SET_MOOD"
+      ]
+    },
+    {
+      "time": "2026-03-27T20:19:22.693901",
+      "commands": [
+        "ADJUST_FAVOR",
+        "SET_MOOD"
+      ]
+    },
+    {
+      "time": "2026-03-27T20:19:46.918135",
+      "commands": [
+        "SPAWN_PROP",
+        "CREATE_ENTITY"
+      ]
+    },
+    {
+      "time": "2026-03-27T20:20:06.997621",
+      "commands": [
+        "SPAWN_PROP"
+      ]
+    },
+    {
+      "time": "2026-03-27T20:20:07.018437",
+      "commands": [
+        "SPAWN_PROP"
+      ]
+    },
+    {
+      "time": "2026-03-27T20:27:13.268853",
+      "commands": [
+        "FORCE_EVENT"
+      ]
+    },
+    {
+      "time": "2026-03-27T20:29:52.376718",
+      "commands": [
+        "FORCE_EVENT"
+      ]
+    },
+    {
+      "time": "2026-03-27T20:44:30.633645",
+      "commands": [
+        "SPAWN_PROP"
+      ]
+    },
+    {
+      "time": "2026-03-27T20:44:53.321204",
+      "commands": [
+        "CREATE_ENTITY",
+        "ADJUST_FAVOR",
+        "SET_MOOD"
+      ]
+    },
+    {
+      "time": "2026-03-27T20:45:18.916941",
+      "commands": [
+        "CREATE_ENTITY"
+      ]
+    },
+    {
+      "time": "2026-03-27T20:46:56.898315",
+      "commands": [
+        "CREATE_ENTITY"
+      ]
+    },
+    {
+      "time": "2026-03-27T20:49:34.839365",
+      "commands": [
+        "SPAWN_PROP"
+      ]
+    },
+    {
+      "time": "2026-03-27T20:53:44.026227",
+      "commands": [
+        "FORCE_EVENT"
+      ]
+    },
+    {
+      "time": "2026-03-27T20:56:08.285402",
+      "commands": [
+        "SPAWN_PROP",
+        "SPAWN_PROP",
+        "SPAWN_PROP",
+        "SPAWN_PROP",
+        "TELEPORT_TO_MAP",
+        "SET_MOOD"
+      ]
+    },
+    {
+      "time": "2026-03-27T20:58:07.066736",
+      "commands": [
+        "FORCE_EVENT"
+      ]
+    },
+    {
+      "time": "2026-03-27T21:03:07.426370",
+      "commands": [
+        "SET_MOOD",
+        "ADJUST_FAVOR",
+        "SPAWN_PROP"
+      ]
+    },
+    {
+      "time": "2026-03-27T21:06:49.630994",
+      "commands": [
+        "SPAWN_PROP"
+      ]
+    },
+    {
+      "time": "2026-03-27T21:21:48.313066",
+      "commands": [
+        "CREATE_ENTITY",
+        "SET_MOOD"
+      ]
+    },
+    {
+      "time": "2026-03-27T21:24:50.528661",
+      "commands": [
+        "CREATE_ENTITY",
+        "SPAWN_PROP",
+        "CHANGE_THEME",
+        "SET_MOOD"
+      ]
+    },
+    {
+      "time": "2026-03-27T21:26:53.272806",
+      "commands": [
+        "FORCE_EVENT"
+      ]
+    },
+    {
+      "time": "2026-03-27T21:29:02.240031",
+      "commands": [
+        "CREATE_ENTITY",
+        "ADJUST_FAVOR",
+        "SET_MOOD"
+      ]
+    },
+    {
+      "time": "2026-03-27T21:31:03.653936",
+      "commands": [
+        "FORCE_EVENT"
+      ]
+    },
+    {
+      "time": "2026-03-27T21:32:03.203270",
+      "commands": [
+        "SPAWN_PROP"
+      ]
+    },
+    {
+      "time": "2026-03-27T21:32:27.348177",
+      "commands": [
+        "LOCK_PLAYER",
+        "ADJUST_FAVOR",
+        "SET_MOOD"
+      ]
+    },
+    {
+      "time": "2026-03-27T21:33:12.209882",
+      "commands": [
+        "CREATE_ENTITY"
+      ]
+    },
+    {
+      "time": "2026-03-27T21:34:29.211784",
+      "commands": [
+        "FORCE_EVENT"
+      ]
+    },
+    {
+      "time": "2026-03-27T21:37:49.034309",
+      "commands": [
+        "CHANGE_THEME",
+        "ADJUST_FAVOR"
+      ]
+    },
+    {
+      "time": "2026-03-27T21:40:45.352235",
+      "commands": [
+        "CHANGE_THEME"
+      ]
+    },
+    {
+      "time": "2026-03-27T21:41:09.359225",
+      "commands": [
+        "CHANGE_THEME",
+        "MODIFY_WORLD"
+      ]
+    },
+    {
+      "time": "2026-03-27T21:41:47.860994",
+      "commands": [
+        "SPAWN_PROP"
+      ]
+    },
+    {
+      "time": "2026-03-27T21:41:47.880145",
+      "commands": [
+        "SPAWN_PROP"
+      ]
+    },
+    {
+      "time": "2026-03-27T21:42:42.067264",
+      "commands": [
+        "TELEPORT_PLAYER"
+      ]
+    },
+    {
+      "time": "2026-03-27T21:43:19.440605",
+      "commands": [
+        "SPAWN_PROP",
+        "ADJUST_FAVOR",
+        "SET_MOOD"
+      ]
+    },
+    {
+      "time": "2026-03-27T21:48:59.601479",
+      "commands": [
+        "CHANGE_THEME",
+        "SPAWN_PROP"
+      ]
+    }
+  ],
+  "player_profile": {
+    "name_given": null,
+    "personality": "curious",
+    "tone_history": [
+      "curious",
+      "friendly",
+      "friendly",
+      "curious",
+      "curious",
+      "curious",
+      "curious",
+      "scared",
+      "friendly",
+      "curious",
+      "scared",
+      "friendly",
+      "friendly",
+      "curious",
+      "friendly",
+      "scared",
+      "curious",
+      "rude",
+      "curious",
+      "friendly"
+    ],
+    "demands_made": [
+      "give me a purple ball",
+      "Give me a ball."
+    ],
+    "demands_granted": 0,
+    "demands_denied": 0,
+    "rude_count": 1,
+    "friendly_count": 9,
+    "curious_count": 12,
+    "scared_count": 3,
+    "topics_mentioned": [
+      "platform",
+      "ball",
+      "circus"
+    ],
+    "favorite_topic": "platform",
+    "times_tried_to_leave": 1,
+    "questions_asked": 12,
+    "total_messages": 40
+  }
+}
