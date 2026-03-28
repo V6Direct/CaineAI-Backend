@@ -76,5 +76,163 @@
     "color_theme": "cartoon",
     "style": "surreal",
     "source": "image.png"
+  },
+  {
+    "palette": [
+      "#646E73",
+      "#A1ADB3",
+      "#1D1D1C"
+    ],
+    "mood": "dreamlike",
+    "structures": [
+      "#hex1",
+      "#hex2",
+      "#hex3"
+    ],
+    "prop_ideas": [
+      "#hex1",
+      "#hex2",
+      "#hex3"
+    ],
+    "layout_hint": "Spatial arrangement of the structures",
+    "color_theme": "cartoon",
+    "style": "surreal",
+    "source": "surreal_architecture_impossible_geometry_floating_buildings_dreamlike_city_hig_20260328003339_01.png"
+  },
+  {
+    "palette": [
+      "#475052",
+      "#27292A",
+      "#707B7D"
+    ],
+    "mood": "e.g. oppressive neon, dreamlike pastel, chaotic glitch",
+    "structures": [
+      "#hex1",
+      "#hex2",
+      "#hex3"
+    ],
+    "prop_ideas": [
+      "#hex1",
+      "#hex2",
+      "#hex3"
+    ],
+    "layout_hint": "Spatial arrangement of the structures",
+    "color_theme": "dominant color name",
+    "style": "surreal, neon, glitchy, dreamlike, cartoon",
+    "source": "surreal_architecture_impossible_geometry_floating_buildings_dreamlike_city_hig_20260328003339_02.png"
+  },
+  {
+    "palette": [
+      "#717E7F",
+      "#1F2928",
+      "#B5BDBB"
+    ],
+    "mood": "dreamlike",
+    "structures": [
+      "#hex1",
+      "#hex2",
+      "#hex3"
+    ],
+    "prop_ideas": [
+      "#hex1",
+      "#hex2",
+      "#hex3"
+    ],
+    "layout_hint": "Spatial arrangement of the structures",
+    "color_theme": "dreamlike",
+    "style": "cartoon",
+    "source": "surreal_architecture_impossible_geometry_floating_buildings_dreamlike_city_hig_20260328003339_04.png"
+  },
+  {
+    "palette": [
+      "#667072",
+      "#A5ADAC",
+      "#202526"
+    ],
+    "source": "surreal_architecture_impossible_geometry_floating_buildings_dreamlike_city_hig_20260328003340_03.png"
+  },
+  {
+    "palette": [
+      "#7994A2",
+      "#AEBFC6",
+      "#2C4C5C"
+    ],
+    "mood": "dreamlike",
+    "structures": [
+      "#hex4",
+      "#hex5"
+    ],
+    "prop_ideas": [
+      "#hex6",
+      "#hex7"
+    ],
+    "layout_hint": "Spatial arrangement of the building",
+    "color_theme": "Neon",
+    "style": "Cartoon",
+    "source": "surreal_architecture_impossible_geometry_floating_buildings_dreamlike_city_ult_20260328003241_04.png"
+  },
+  {
+    "palette": [
+      "#4E6C7A",
+      "#143241",
+      "#35515C"
+    ],
+    "mood": "dreamlike",
+    "structures": [
+      "#hex1",
+      "#hex2",
+      "#hex3"
+    ],
+    "prop_ideas": [
+      "#hex1",
+      "#hex2",
+      "#hex3"
+    ],
+    "layout_hint": "Spatial arrangement of structures",
+    "color_theme": "dreamlike",
+    "style": "cartoon",
+    "source": "surreal_architecture_impossible_geometry_floating_buildings_dreamlike_city_ult_20260328003242_01.png"
+  },
+  {
+    "palette": [
+      "#72848D",
+      "#93A3AA",
+      "#455A69"
+    ],
+    "mood": "dreamlike",
+    "structures": [
+      "#hex4",
+      "#hex5"
+    ],
+    "prop_ideas": [
+      "#hex6",
+      "#hex7"
+    ],
+    "layout_hint": "3D cityscape with clouds",
+    "color_theme": "white",
+    "style": "surreal",
+    "source": "surreal_architecture_impossible_geometry_floating_buildings_dreamlike_city_ult_20260328003242_02.png"
+  },
+  {
+    "palette": [
+      "#56777B",
+      "#173651",
+      "#386171"
+    ],
+    "mood": "e.g. oppressive neon, dreamlike pastel, chaotic glitch",
+    "structures": [
+      "#hex1",
+      "#hex2",
+      "#hex3"
+    ],
+    "prop_ideas": [
+      "#hex1",
+      "#hex2",
+      "#hex3"
+    ],
+    "layout_hint": "Spatial arrangement of the building",
+    "color_theme": "Neon, glitch, dreamlike",
+    "style": "Cartoon",
+    "source": "surreal_architecture_impossible_geometry_floating_buildings_dreamlike_city_ult_20260328003242_03.png"
   }
 ]

@@ -1,0 +1,129 @@
+{
+  "themes": {
+    "dark_circus": {
+      "structures": [
+        {"type": "ring",           "position": [0, 0, 0],     "color": "#CC0033", "label": "main_ring"},
+        {"type": "tower",          "position": [8, 0, 0],     "color": "#880000", "label": "highwire_left"},
+        {"type": "tower",          "position": [-8, 0, 0],    "color": "#880000", "label": "highwire_right"},
+        {"type": "platform_stack", "position": [0, 0, 8],     "color": "#440011", "label": "bleachers"}
+      ],
+      "props": [
+        {"type": "box",      "size": [0.3, 8.0, 0.3], "color": "#CC0033", "label": "tent_pole",    "count": 4, "ring_radius": 6.0},
+        {"type": "platform", "size": [1.5, 0.2, 1.5], "color": "#FF4400", "label": "trapeze_plat", "count": 3, "y_range": [4, 7]},
+        {"type": "box",      "size": [1.0, 1.0, 1.0], "color": "#FFAA00", "label": "cage",         "count": 5, "ring_radius": 10.0}
+      ],
+      "lights": [
+        {"color": "#FF3300", "intensity": 3.0, "range": 15, "position": [0, 7, 0]},
+        {"color": "#FFAA00", "intensity": 1.5, "range": 6,  "position": [8, 5, 0]},
+        {"color": "#FFAA00", "intensity": 1.5, "range": 6,  "position": [-8, 5, 0]}
+      ],
+      "entities": ["clown", "acrobat", "ringmaster shadow"],
+      "palette":  ["#CC0033", "#880000", "#FFAA00"],
+      "bg_color": "#0D0005",
+      "paths": [
+        {"from": [0, 0, 12], "to": [0, 0, 0], "label": "main_entrance"}
+      ]
+    },
+
+    "crystal_caves": {
+      "structures": [
+        {"type": "ring",    "position": [0, 0, 0],  "color": "#004466", "label": "crystal_ring"},
+        {"type": "tower",   "position": [5, 0, 5],  "color": "#0088AA", "label": "stalagmite_1"},
+        {"type": "tower",   "position": [-5, 0, -5],"color": "#006688", "label": "stalagmite_2"},
+        {"type": "tower",   "position": [5, 0, -5], "color": "#0066AA", "label": "stalagmite_3"}
+      ],
+      "props": [
+        {"type": "box",      "size": [0.5, 4.0, 0.5], "color": "#00CCFF", "label": "crystal_shard", "count": 12, "ring_radius": 7.0},
+        {"type": "platform", "size": [2.0, 0.2, 2.0], "color": "#004488", "label": "ice_ledge",     "count": 5,  "y_range": [2, 6]},
+        {"type": "box",      "size": [3.0, 0.3, 3.0], "color": "#002244", "label": "cave_floor",    "count": 8,  "ring_radius": 11.0}
+      ],
+      "lights": [
+        {"color": "#00FFFF", "intensity": 2.0, "range": 12, "position": [0, 6, 0]},
+        {"color": "#0088FF", "intensity": 1.2, "range": 5,  "position": [6, 3, 6]},
+        {"color": "#00FFAA", "intensity": 1.2, "range": 5,  "position": [-6, 3, -6]}
+      ],
+      "entities": ["crystal golem", "frozen specter", "echo sprite"],
+      "palette":  ["#00CCFF", "#004488", "#00FFAA"],
+      "bg_color": "#000D1A",
+      "paths": [
+        {"from": [0, 0, 14], "to": [0, 0, 0], "label": "cave_entrance"}
+      ]
+    },
+
+    "neon_wasteland": {
+      "structures": [
+        {"type": "maze_wall",      "position": [0, 0, 5],   "color": "#FF00AA", "label": "barrier_1"},
+        {"type": "maze_wall",      "position": [0, 0, -5],  "color": "#00FFCC", "label": "barrier_2"},
+        {"type": "platform_stack", "position": [0, 0, 0],   "color": "#FF0066", "label": "central_ruin"},
+        {"type": "tower",          "position": [12, 0, 12], "color": "#AA00FF", "label": "dead_tower"}
+      ],
+      "props": [
+        {"type": "box",      "size": [0.4, 3.0, 0.4], "color": "#FF00AA", "label": "neon_post",    "count": 10, "ring_radius": 8.0},
+        {"type": "platform", "size": [3.0, 0.2, 3.0], "color": "#220033", "label": "rubble_plate", "count": 6,  "y_range": [0, 2]},
+        {"type": "box",      "size": [2.0, 0.5, 2.0], "color": "#440066", "label": "debris",       "count": 8,  "ring_radius": 13.0}
+      ],
+      "lights": [
+        {"color": "#FF00AA", "intensity": 2.5, "range": 10, "position": [0, 5, 0]},
+        {"color": "#00FFCC", "intensity": 1.5, "range": 6,  "position": [8, 3, 8]},
+        {"color": "#AA00FF", "intensity": 1.5, "range": 6,  "position": [-8, 3, -8]}
+      ],
+      "entities": ["glitch wraith", "neon skull", "static phantom"],
+      "palette":  ["#FF00AA", "#00FFCC", "#AA00FF"],
+      "bg_color": "#050005",
+      "paths": [
+        {"from": [0, 0, 14], "to": [0, 0, 0], "label": "wasteland_road"}
+      ]
+    },
+
+    "drowned_library": {
+      "structures": [
+        {"type": "platform_stack", "position": [0, 0, 0],   "color": "#223300", "label": "central_shelf"},
+        {"type": "tower",          "position": [7, 0, 7],   "color": "#334400", "label": "bookshelf_1"},
+        {"type": "tower",          "position": [-7, 0, 7],  "color": "#334400", "label": "bookshelf_2"},
+        {"type": "tower",          "position": [7, 0, -7],  "color": "#334400", "label": "bookshelf_3"},
+        {"type": "ring",           "position": [0, 0, -8],  "color": "#112200", "label": "reading_alcove"}
+      ],
+      "props": [
+        {"type": "box",      "size": [2.0, 0.4, 0.4], "color": "#553300", "label": "book_stack",  "count": 10, "ring_radius": 5.0},
+        {"type": "platform", "size": [2.5, 0.2, 2.5], "color": "#1A2200", "label": "flooded_step","count": 6,  "y_range": [0, 3]},
+        {"type": "box",      "size": [0.3, 5.0, 0.3], "color": "#224400", "label": "column",      "count": 8,  "ring_radius": 10.0}
+      ],
+      "lights": [
+        {"color": "#AAFFAA", "intensity": 1.2, "range": 12, "position": [0, 6, 0]},
+        {"color": "#66FF88", "intensity": 0.8, "range": 5,  "position": [7, 4, 7]},
+        {"color": "#44AA55", "intensity": 0.8, "range": 5,  "position": [-7, 4, 7]}
+      ],
+      "entities": ["paper wraith", "ink specter", "forgotten reader"],
+      "palette":  ["#334400", "#553300", "#AAFFAA"],
+      "bg_color": "#020D02",
+      "paths": [
+        {"from": [0, 0, 14], "to": [0, 0, 0], "label": "library_aisle"}
+      ]
+    },
+
+    "carnival_end": {
+      "structures": [
+        {"type": "ring",           "position": [0, 0, 0],    "color": "#FF6600", "label": "carousel"},
+        {"type": "platform_stack", "position": [10, 0, 0],   "color": "#FF3300", "label": "funhouse"},
+        {"type": "platform_stack", "position": [-10, 0, 0],  "color": "#CC6600", "label": "ticket_booth"},
+        {"type": "tower",          "position": [0, 0, -10],  "color": "#FF9900", "label": "ferris_axle"}
+      ],
+      "props": [
+        {"type": "box",      "size": [0.3, 5.0, 0.3], "color": "#FF6600", "label": "tent_stripe", "count": 8,  "ring_radius": 7.0},
+        {"type": "platform", "size": [1.5, 0.2, 1.5], "color": "#FFCC00", "label": "ride_step",   "count": 6,  "y_range": [1, 4]},
+        {"type": "box",      "size": [1.2, 1.2, 1.2], "color": "#CC3300", "label": "stall",       "count": 6,  "ring_radius": 11.0}
+      ],
+      "lights": [
+        {"color": "#FF6600", "intensity": 3.0, "range": 14, "position": [0, 6, 0]},
+        {"color": "#FFCC00", "intensity": 1.5, "range": 6,  "position": [10, 4, 0]},
+        {"color": "#FF3300", "intensity": 1.5, "range": 6,  "position": [-10, 4, 0]}
+      ],
+      "entities": ["broken carousel horse", "laughing mask", "candy skull"],
+      "palette":  ["#FF6600", "#FFCC00", "#CC3300"],
+      "bg_color": "#0D0500",
+      "paths": [
+        {"from": [0, 0, 14], "to": [0, 0, 0], "label": "carnival_gate"}
+      ]
+    }
+  }
+}

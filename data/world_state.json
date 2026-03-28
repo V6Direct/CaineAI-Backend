@@ -1,22 +1,20 @@
 {
   "entities": [
     {
-      "name": "Glowing Cube",
-      "style": "neon",
+      "name": "Echo Wisp",
+      "style": "dreamlike",
       "position": [
-        10,
-        0
+        3,
+        3
       ]
     },
     {
-      "name": "bouncing ball",
-      "style": "cartoon",
+      "name": "Fragment Orb",
+      "style": "glitchy",
       "position": [
-        7,
-        2,
-        0
-      ],
-      "id": "entity_1774658152321"
+        -4,
+        2
+      ]
     }
   ],
   "npcs": [
@@ -30,16 +28,133 @@
       ],
       "color": "#FF00AA",
       "dialogue": "The circus is alive, and so am I",
-      "action": "idle",
+      "action": "orbit_landmark",
       "id": "npc_1774658347022"
+    },
+    {
+      "name": "Ringmaster of Shadows",
+      "role": "guardian",
+      "position": [
+        0,
+        0,
+        0
+      ],
+      "color": "#ACB3CB",
+      "dialogue": "Welcome, Pringels, to the circus of regret",
+      "action": "idle",
+      "id": "npc_1774699610017"
+    },
+    {
+      "name": "Luna the juggler",
+      "role": "wanderer",
+      "position": [
+        1,
+        0,
+        -1
+      ],
+      "color": "#BBC1D5",
+      "dialogue": "Catch! It's not just a ball\u2014it's a star, once lost.",
+      "action": "orbit_landmark",
+      "id": "npc_1774703294716"
+    },
+    {
+      "name": "Jester of the High Wire",
+      "role": "wanderer",
+      "position": [
+        8,
+        14,
+        12
+      ],
+      "color": "#ACB3CB",
+      "dialogue": "Catch it if you can. It remembers when you were small.",
+      "action": "idle",
+      "id": "npc_1774705227833"
+    },
+    {
+      "name": "Luna the juggler",
+      "role": "wanderer",
+      "position": [
+        8,
+        0,
+        16
+      ],
+      "color": "#8800FF",
+      "dialogue": "Catch this.",
+      "action": "orbit_landmark",
+      "id": "npc_1774705240057"
+    },
+    {
+      "name": "Luna the juggler",
+      "role": "wanderer",
+      "position": [
+        1,
+        0,
+        -1
+      ],
+      "color": "#ACB3CB",
+      "dialogue": "Catch, Pringels? Or will you drop it like the last?",
+      "action": "orbit_landmark",
+      "id": "npc_1774706127775"
+    },
+    {
+      "name": "Luna the juggler",
+      "role": "wanderer",
+      "position": [
+        -1,
+        0,
+        -2
+      ],
+      "color": "#B5BDBB",
+      "dialogue": "Catch.",
+      "action": "orbit_landmark",
+      "id": "npc_1774706412286"
+    },
+    {
+      "name": "Luna the juggler",
+      "role": "wanderer",
+      "position": [
+        0,
+        0,
+        0
+      ],
+      "color": "#455A69",
+      "dialogue": "Catch this: time isn\u2019t real, but the fall is.",
+      "action": "orbit_landmark",
+      "id": "npc_1774706712218"
+    },
+    {
+      "name": "Jester of the High Wire",
+      "role": "wanderer",
+      "position": [
+        -4,
+        0,
+        -1
+      ],
+      "color": "#A5ADAC",
+      "dialogue": "Catch the light, Pringels. It's made of syllables.",
+      "action": "idle",
+      "id": "npc_1774706775585"
+    },
+    {
+      "name": "Luna the juggler",
+      "role": "wanderer",
+      "position": [
+        0,
+        2,
+        0
+      ],
+      "color": "#B5BDBB",
+      "dialogue": "I caught your request mid-toss.",
+      "action": "orbit_landmark",
+      "id": "npc_1774706973257"
     }
   ],
   "environment": {
-    "color": "#1A0033",
+    "color": "#202526",
     "gravity": 1.0,
-    "theme": "Circus Dreams",
-    "light_color": "#FF00FF",
-    "light_energy": 1.5
+    "theme": "Floating Ruins",
+    "light_color": "#00FFCC",
+    "light_energy": 3.5
   },
   "rules": {
     "gravity_enabled": true,
@@ -49,19 +164,20 @@
   "events": [],
   "player_state": {
     "position": [
-      2,
-      0
+      5.28632688522339,
+      12.6970710754395
     ],
-    "last_input": "build me a staircase",
+    "last_input": "s",
     "locked": false,
     "lock_duration": 2
   },
-  "caine_mood": "giddy with power",
-  "player_favor": 10,
-  "tick": 240,
+  "caine_mood": "nostalgic and sad",
+  "player_favor": -5,
+  "tick": 431,
   "active_brief": {
-    "theme": "Circus Dreams",
-    "mood": "oppressive",
-    "narrative_seed": "The circus has been abandoned for years, but the lights still flicker with an otherworldly energy."
-  }
+    "theme": "Floating Ruins",
+    "mood": "dreamlike",
+    "narrative_seed": "Everything here remembers a world that never was\u2014listen closely, and the stones will hum its name."
+  },
+  "active_map_id": "neon_circus"
 }

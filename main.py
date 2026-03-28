@@ -7,6 +7,7 @@ from collections import Counter
 from concurrent.futures import ThreadPoolExecutor
 from contextlib import asynccontextmanager
 from datetime import datetime
+from typing import Optional
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -14,6 +15,9 @@ from pydantic import BaseModel
 
 from ai_brain import call_caine, warmup_model
 from data_loader import load_world_state, save_world_state, load_memory, save_memory, load_map_presets
+
+from data_loader import load_world_state, save_world_state, load_memory, save_memory, load_map_presets, load_lore
+
 
 pending_responses: list  = []
 autonomous_busy: bool    = False
@@ -34,7 +38,6 @@ _current_map_brief: dict = {}
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     loop = asyncio.get_event_loop()
-
     loop.run_in_executor(autonomous_executor, warmup_model)
 
     from vision_loader import scan_images_folder
@@ -57,14 +60,56 @@ async def lifespan(app: FastAPI):
     player_executor.shutdown(wait=False)
     autonomous_executor.shutdown(wait=False)
 
+memory = load_memory()
+memory["caine_lore"] = load_lore()  # <- hinzufügen
+memory["session_start"] = datetime.utcnow().isoformat()
+save_memory(memory)
 
 app = FastAPI(title="CaineAI Backend", lifespan=lifespan)
 app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"])
 
 
+# ── Models ────────────────────────────────────────────────────────────────────
 class PlayerInput(BaseModel):
-    text: str      = ""
-    position: list = [0, 0]
+    text: str           = ""
+    position: list      = [0, 0]
+    # ↓ NEW: Godot sends these back so backend stays in sync
+    caine_mood: Optional[str] = None
+    player_favor: Optional[int] = None
+    active_map_id: Optional[str] = None
+    npcs: Optional[list] = None
+    entities: Optional[list] = None
+
+
+# ── Client state sync ─────────────────────────────────────────────────────────
+def sync_client_state(inp: PlayerInput) -> None:
+    """
+    Merge state that Godot tracks locally (mood, favor, map, npcs, entities)
+    back into world_state.json before we call the AI.
+    This ensures the AI always reasons from the real current state,
+    not a stale server-side snapshot.
+    """
+    state = load_world_state()
+
+    state["player_state"]["position"]   = inp.position
+    state["player_state"]["last_input"] = inp.text
+
+    if inp.caine_mood is not None:
+        state["caine_mood"] = inp.caine_mood
+
+    if inp.player_favor is not None:
+        state["player_favor"] = max(-10, min(10, inp.player_favor))
+
+    if inp.active_map_id is not None and inp.active_map_id != "":
+        state["active_map_id"] = inp.active_map_id
+
+    if inp.npcs is not None:
+        state["npcs"] = inp.npcs[:10]
+
+    if inp.entities is not None:
+        state["entities"] = inp.entities[:30]
+
+    save_world_state(state)
 
 
 # ── Player profiling ──────────────────────────────────────────────────────────
@@ -75,20 +120,20 @@ def update_player_profile(text: str):
 
     profile["total_messages"] = profile.get("total_messages", 0) + 1
 
-    if any(w in p for w in ["hate","stupid","dumb","boring","bad","ugly","idiot","shut up"]):
+    if any(w in p for w in ["hate", "stupid", "dumb", "boring", "bad", "ugly", "idiot", "shut up"]):
         profile["rude_count"] = profile.get("rude_count", 0) + 1
         profile.setdefault("tone_history", []).append("rude")
-    elif any(w in p for w in ["hello","hi","hey","thanks","please","nice","love","friend","thank"]):
+    elif any(w in p for w in ["hello", "hi", "hey", "thanks", "please", "nice", "love", "friend", "thank"]):
         profile["friendly_count"] = profile.get("friendly_count", 0) + 1
         profile.setdefault("tone_history", []).append("friendly")
-    elif any(w in p for w in ["why","what","how","who","where","when","tell me","explain","?"]):
+    elif any(w in p for w in ["why", "what", "how", "who", "where", "when", "tell me", "explain", "?"]):
         profile["curious_count"] = profile.get("curious_count", 0) + 1
         profile.setdefault("tone_history", []).append("curious")
         profile["questions_asked"] = profile.get("questions_asked", 0) + 1
-    elif any(w in p for w in ["help","stop","scared","afraid","leave","exit","escape","let me out"]):
+    elif any(w in p for w in ["help", "stop", "scared", "afraid", "leave", "exit", "escape", "let me out"]):
         profile["scared_count"] = profile.get("scared_count", 0) + 1
         profile.setdefault("tone_history", []).append("scared")
-        if any(w in p for w in ["leave","exit","escape","let me out","go home"]):
+        if any(w in p for w in ["leave", "exit", "escape", "let me out", "go home"]):
             profile["times_tried_to_leave"] = profile.get("times_tried_to_leave", 0) + 1
 
     profile["tone_history"] = profile.get("tone_history", [])[-20:]
@@ -101,8 +146,8 @@ def update_player_profile(text: str):
     }
     profile["personality"] = max(counts, key=counts.get)
 
-    if any(w in p for w in ["give me","i want","spawn","make","create",
-                              "can i have","please give","i need","bring me"]):
+    if any(w in p for w in ["give me", "i want", "spawn", "make", "create",
+                              "can i have", "please give", "i need", "bring me"]):
         profile.setdefault("demands_made", []).append(text[:60])
         profile["demands_made"] = profile["demands_made"][-10:]
 
@@ -112,9 +157,9 @@ def update_player_profile(text: str):
         print(f"[Profile] Player name: {profile['name_given']}")
 
     topic_keywords = [
-        "ball","sword","gun","weapon","door","light","dark","color",
-        "music","sound","map","floor","sky","entity","mirror","clock",
-        "circus","tower","platform","arch","pillar","game","world"
+        "ball", "sword", "gun", "weapon", "door", "light", "dark", "color",
+        "music", "sound", "map", "floor", "sky", "entity", "mirror", "clock",
+        "circus", "tower", "platform", "arch", "pillar", "game", "world"
     ]
     found = [kw for kw in topic_keywords if kw in p]
     if found:
@@ -128,7 +173,6 @@ def update_player_profile(text: str):
 
 # ── Map generation ────────────────────────────────────────────────────────────
 def _fallback_to_random_preset():
-    """Load a random preset from map_presets.json as a fallback when brief generation fails."""
     try:
         presets = load_map_presets().get("presets", [])
         if not presets:
@@ -192,7 +236,6 @@ async def _trigger_new_map():
 
 
 def _organic_evolve(state: dict, brief: dict):
-    """Small, palette-consistent prop additions between full map regens."""
     if not brief:
         return
     palette = brief.get("palette", ["#440066"])
@@ -211,7 +254,6 @@ def _organic_evolve(state: dict, brief: dict):
 async def map_evolution_loop():
     global autonomous_busy, _current_map_brief
     await asyncio.sleep(25)
-
     await _trigger_new_map()
 
     while autonomous_running:
@@ -223,14 +265,12 @@ async def map_evolution_loop():
         try:
             state = load_world_state()
             tick  = state.get("tick", 0)
-
             if tick > 0 and tick % 8 == 0:
                 await _trigger_new_map()
             else:
                 _organic_evolve(state, _current_map_brief)
                 state["tick"] = tick + 1
                 save_world_state(state)
-
         except Exception as e:
             print(f"[Map evolve error] {e}")
         finally:
@@ -321,6 +361,7 @@ def apply_commands_to_world(commands: list):
 
         elif ctype == "SET_MOOD":
             state["caine_mood"] = data.get("mood", "neutral")
+            print(f"[Mood] → {state['caine_mood']}")
 
         elif ctype == "ADJUST_FAVOR":
             delta = int(data.get("delta", 0))
@@ -373,9 +414,13 @@ def apply_commands_to_world(commands: list):
 # ── Memory ────────────────────────────────────────────────────────────────────
 def record_interaction(player_input: str, response: dict):
     memory = load_memory()
+    memory.setdefault("interactions", [])
+    memory.setdefault("world_changes", [])
+    memory.setdefault("character_breaks", [])
+    memory.setdefault("chaos_count", 0)
+
     text = response.get("text", "")
 
-    # Detect character breaks
     broke_character = any(phrase in text.lower() for phrase in [
         "i'm an ai", "i am an ai", "i'm a language model", "as an ai",
         "i was created", "i don't have feelings", "i cannot",
@@ -392,12 +437,11 @@ def record_interaction(player_input: str, response: dict):
 
     if broke_character:
         memory.setdefault("character_breaks", []).append({
-            "trigger": player_input[:60],
+            "trigger":      player_input[:60],
             "bad_response": text[:80]
         })
         memory["character_breaks"] = memory["character_breaks"][-10:]
 
-    # rest of your existing code...
     memory["world_changes"].append({
         "time":     datetime.utcnow().isoformat(),
         "commands": [c.get("type") for c in response.get("commands", [])]
@@ -413,18 +457,21 @@ def record_interaction(player_input: str, response: dict):
 async def player_input_endpoint(inp: PlayerInput):
     global pending_responses
 
-    update_player_profile(inp.text)
+    # 1. Merge Godot-side state into world_state.json first
+    sync_client_state(inp)
 
-    state = load_world_state()
-    state["player_state"]["position"]   = inp.position
-    state["player_state"]["last_input"] = inp.text
-    save_world_state(state)
+    # 2. Update player profile from the message text
+    if inp.text:
+        update_player_profile(inp.text)
 
+    # 3. Call the AI (it now reads the freshly synced state)
     loop   = asyncio.get_event_loop()
     result = await loop.run_in_executor(
         player_executor,
         lambda: call_caine(player_input=inp.text, autonomous=False)
     )
+
+    # 4. Apply returned commands back into world_state
     apply_commands_to_world(result.get("commands", []))
     record_interaction(inp.text, result)
     pending_responses.append(result)
@@ -436,7 +483,18 @@ async def get_world_state():
     global pending_responses
     state     = load_world_state()
     caine_out = pending_responses.pop(0) if pending_responses else None
-    response  = {"caine": caine_out, "world": state}
+
+    # ↓ Include mood + favor in response so Godot can update GameState
+    response = {
+        "caine": caine_out,
+        "world": state,
+        "sync": {
+            "caine_mood":   state.get("caine_mood", "theatrical and delighted"),
+            "player_favor": state.get("player_favor", 0),
+            "active_map_id": state.get("active_map_id", "")
+        }
+    }
+
     state["events"]                 = []
     state["player_state"]["locked"] = False
     save_world_state(state)

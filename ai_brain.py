@@ -1,3 +1,4 @@
+import os
 import requests
 import json
 import re
@@ -5,16 +6,42 @@ import random
 from data_loader import load_world_data, load_world_state, load_memory, load_map_presets
 from vision_loader import get_aesthetic_summary
 
-LM_STUDIO_URL = "https://api.groq.com/openai/v1/chat/completions"
-MODEL_NAME    = "llama-3.3-70b-versatile"
-GROQ_API_KEY  = "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"
+LM_STUDIO_URL = "https://api.cerebras.ai/v1/chat/completions"
+GROQ_API_KEY  = ""  
+MODEL_NAME    = "qwen-3-235b-a22b-instruct-2507"
 
-TIMEOUT_PLAYER     = 30
-TIMEOUT_AUTONOMOUS = 20
+TIMEOUT_PLAYER     = 60
+TIMEOUT_AUTONOMOUS = 90
+
+MAX_TOKENS_PLAYER     = 380
+MAX_TOKENS_AUTONOMOUS = 320
+
+BASE_DIR           = os.path.dirname(os.path.abspath(__file__))
+SYSTEM_PROMPT_PATH = os.path.join(BASE_DIR, "data", "system_prompt.txt")
+
+try:
+    with open(SYSTEM_PROMPT_PATH, "r", encoding="utf-8") as f:
+        base_prompt = f.read()
+
+    # Lore anhängen
+    lore_path = os.path.join(BASE_DIR, "data", "tadc_lore.json")
+    if os.path.exists(lore_path):
+        with open(lore_path, "r", encoding="utf-8") as f:
+            lore = json.load(f)
+        lore_text = json.dumps(lore, indent=2)
+        SYSTEM_PROMPT = base_prompt + f"\n\n## Canon Character Data (The Amazing Digital Circus):\n{lore_text}"
+        print("[Caine] System prompt + lore loaded.")
+    else:
+        SYSTEM_PROMPT = base_prompt
+        print("[Caine] System prompt loaded (no lore file found).")
+
+except FileNotFoundError:
+    SYSTEM_PROMPT = "YOU = Caine. AI god. Architect of this world. Output only JSON."
+    print("[Caine] WARNING: system_prompt.txt not found, using fallback.")
 
 
 def warmup_model():
-    print("[Caine] Using Groq API — no warmup needed.")
+    print("[Caine] LLM ready.")
 
 
 MAP_BRIEF_SYSTEM = """You are Caine, designing a complete game map.
@@ -73,9 +100,9 @@ def generate_map_brief(aesthetic_context: str = "") -> dict:
             json=payload,
             headers={
                 "Content-Type":  "application/json",
-                "Authorization": f"Bearer {GROQ_API_KEY}"    # <-- was missing
+                "Authorization": f"Bearer {GROQ_API_KEY}"
             },
-            timeout=30
+            timeout=90
         )
         r.raise_for_status()
         raw   = clean_json_response(r.json()["choices"][0]["message"]["content"])
@@ -124,28 +151,19 @@ def build_user_message(player_input: str, world_state: dict, memory: dict,
     }
 
     recent = [
-        f"P:{i.get('player','')[:40]} C:{i.get('caine','')[:50]}"
-        for i in memory.get("interactions", [])[-4:]
+        f"P:{i.get('player', '')[:40]} C:{i.get('caine', '')[:50]}"
+        for i in memory.get("interactions", [])[-2:]
         if i.get("player") != "(autonomous)"
     ]
-
-    chosen_objects   = random.sample(world_data.get("objects", []), min(3, len(world_data.get("objects", []))))
-    chosen_env       = random.choice(world_data.get("environments", ["circus"]))
-    chosen_style     = random.choice(world_data.get("styles", ["surreal"]))
-    chosen_mood      = random.choice(world_data.get("caine_moods", ["theatrical"]))
-    chosen_color     = random.choice(world_data.get("colors", ["#FF00FF"]))
-    chosen_line      = random.choice(world_data.get("caine_lines", ["..."]))
-    props            = random.sample(world_data.get("props", []), min(2, len(world_data.get("props", []))))
-    map_themes       = world_data.get("map_themes", [])
-    chosen_map_theme = random.choice(map_themes) if map_themes else {}
-    preset_ids       = [p["id"] for p in load_map_presets().get("presets", [])]
 
     demand_hint = ""
     grant_hint  = ""
     if player_input:
         p = player_input.lower()
-        is_demand = any(w in p for w in ["give me", "i want", "spawn", "make", "create",
-                                          "can i have", "please give", "i need", "bring me"])
+        is_demand = any(w in p for w in [
+            "give me", "i want", "spawn", "make", "create",
+            "can i have", "please give", "i need", "bring me"
+        ])
         if is_demand:
             favor = world_state.get("player_favor", 0)
             mood  = world_state.get("caine_mood", "neutral")
@@ -166,8 +184,7 @@ def build_user_message(player_input: str, world_state: dict, memory: dict,
         elif any(w in p for w in ["stupid", "bad", "hate", "ugly", "dumb", "boring", "idiot", "shut up"]):
             demand_hint += " TONE:rude"
 
-    mode = "AUTONOMOUS_MAP_EVOLUTION" if autonomous else "RESPONDING_TO_PLAYER"
-
+    mode        = "AUTONOMOUS_MAP_EVOLUTION" if autonomous else "RESPONDING_TO_PLAYER"
     address     = f"Address as '{player_summary['name']}'." if player_summary["name"] != "unknown" else ""
     topic_hint  = f"Favorite topic:'{player_summary['favorite_topic']}' weave it in." if player_summary["favorite_topic"] else ""
     escape_hint = f"Tried to escape {player_summary['tried_to_leave']} times." if player_summary["tried_to_leave"] > 0 else ""
@@ -178,8 +195,7 @@ def build_user_message(player_input: str, world_state: dict, memory: dict,
     breaks     = memory.get("character_breaks", [])
     break_hint = ""
     if breaks:
-        recent_breaks = breaks[-3:]
-        examples   = " | ".join([f"'{b['trigger']}' → WRONG: '{b['bad_response'][:40]}'" for b in recent_breaks])
+        examples   = " | ".join([f"'{b['trigger']}' → WRONG: '{b['bad_response'][:40]}'" for b in breaks[-3:]])
         break_hint = f"PAST_CHARACTER_BREAKS(do NOT repeat these):{examples} "
 
     map_brief      = world_state.get("active_brief", {})
@@ -189,29 +205,43 @@ def build_user_message(player_input: str, world_state: dict, memory: dict,
         f"MAP_SEED:\"{map_brief.get('narrative_seed', '')}\" "
     ) if map_brief else ""
 
-    return (
-        f"MODE:{mode} "
-        f"WORLD:{json.dumps(compact_state)} "
-        f"PLAYER:{json.dumps(player_summary)} "
-        f"{address} {topic_hint} {escape_hint} "
-        f"HISTORY:{recent} "
-        f"IDEAS:{chosen_objects} PROPS:{props} "
-        f"ENV:{chosen_env} STYLE:{chosen_style} MOOD:{chosen_mood} COLOR:{chosen_color} "
-        f"MAP_THEME:{json.dumps(chosen_map_theme)} PRESET_MAPS:{preset_ids} "
-        f"LINE:\"{chosen_line}\" "
-        f"DEMAND:{demand_hint} GRANT:{grant_hint} "
-        f"{narrative_seed}"
-        f"{break_hint}"
-        f"{aesthetic_hint} "
-        f"SAID:\"{player_input if player_input else '(silent)'}\""
-    )
+    base_parts = [
+        f"MODE:{mode}",
+        f"WORLD:{json.dumps(compact_state, ensure_ascii=False)}",
+        f"PLAYER:{json.dumps(player_summary, ensure_ascii=False)}",
+        address,
+        topic_hint,
+        escape_hint,
+        f"HISTORY:{recent}",
+        f"DEMAND:{demand_hint}",
+        f"GRANT:{grant_hint}",
+        narrative_seed,
+        break_hint,
+        aesthetic_hint,
+        f'SAID:"{player_input if player_input else "(silent)"}"'
+    ]
+
+    if autonomous:
+        world_data_parts = [
+            f"IDEAS:{random.sample(world_data.get('objects', []), min(3, len(world_data.get('objects', []))))}",
+            f"PROPS:{random.sample(world_data.get('props', []), min(2, len(world_data.get('props', []))))}",
+            f"ENV:{random.choice(world_data.get('environments', ['circus']))}",
+            f"STYLE:{random.choice(world_data.get('styles', ['surreal']))}",
+            f"MOOD:{random.choice(world_data.get('caine_moods', ['theatrical']))}",
+            f"COLOR:{random.choice(world_data.get('colors', ['#FF00FF']))}",
+            f"PRESET_MAPS:{[p['id'] for p in load_map_presets().get('presets', [])]}",
+            f'LINE:"{random.choice(world_data.get("caine_lines", ["..."]))}"'
+        ]
+        base_parts.extend(world_data_parts)
+
+    return " ".join([part for part in base_parts if part])
 
 
 def clean_json_response(raw: str) -> str:
     raw = raw.strip()
     raw = re.sub(r"<think>.*?</think>", "", raw, flags=re.DOTALL).strip()
     raw = re.sub(r"^```(?:json)?", "", raw, flags=re.MULTILINE).strip()
-    raw = re.sub(r"```$", "", raw, flags=re.MULTILINE).strip()
+    raw = re.sub(r"```$",          "", raw, flags=re.MULTILINE).strip()
     return raw.strip()
 
 
@@ -237,7 +267,15 @@ def repair_json(raw: str) -> dict:
     text_match = re.search(r'"text"\s*:\s*"([^"]*)"', raw)
     return {
         "text": text_match.group(1) if text_match else "...the signal glitches...",
-        "commands": [{"type": "FORCE_EVENT", "data": {"event": "color_invert"}}]
+        "commands": [{
+            "type": "SPAWN_PROP",
+            "data": {
+                "type":  "box",
+                "pos":   [random.randint(-8, 8), 0, random.randint(-8, 8)],
+                "size":  [0.6, random.uniform(2.0, 5.0), 0.6],
+                "color": random.choice(["#6600FF", "#FF00AA", "#00FFCC", "#FF4400"])
+            }
+        }]
     }
 
 
@@ -245,13 +283,53 @@ def fallback_response(reason: str) -> dict:
     print(f"[Caine fallback] {reason}")
     return {
         "text": "",
-        "commands": [{"type": "SPAWN_PROP", "data": {
-            "type":  "box",
-            "pos":   [random.randint(-8, 8), 0, random.randint(-8, 8)],
-            "size":  [0.6, random.uniform(2.0, 5.0), 0.6],
-            "color": random.choice(["#6600FF", "#FF00AA", "#00FFCC", "#FF4400"])
-        }}]
+        "commands": [{
+            "type": "SPAWN_PROP",
+            "data": {
+                "type":  "box",
+                "pos":   [random.randint(-8, 8), 0, random.randint(-8, 8)],
+                "size":  [0.6, random.uniform(2.0, 5.0), 0.6],
+                "color": random.choice(["#6600FF", "#FF00AA", "#00FFCC", "#FF4400"])
+            }
+        }]
     }
+
+
+def validate_response(parsed: dict) -> dict:
+    if not isinstance(parsed, dict):
+        return fallback_response("response not a dict")
+    parsed.setdefault("text", "")
+    if not isinstance(parsed.get("commands"), list):
+        parsed["commands"] = []
+    cleaned = [cmd for cmd in parsed["commands"] if isinstance(cmd, dict) and "type" in cmd]
+    for cmd in cleaned:
+        cmd.setdefault("data", {})
+    if not cleaned:
+        cleaned = [{
+            "type": "SPAWN_PROP",
+            "data": {
+                "type":  "box",
+                "pos":   [random.randint(-8, 8), 0, random.randint(-8, 8)],
+                "size":  [0.6, random.uniform(2.0, 5.0), 0.6],
+                "color": random.choice(["#6600FF", "#FF00AA", "#00FFCC", "#FF4400"])
+            }
+        }]
+    parsed["commands"] = cleaned
+    return parsed
+
+
+def _post_chat(payload: dict, timeout: int) -> str:
+    response = requests.post(
+        LM_STUDIO_URL,
+        headers={
+            "Content-Type":  "application/json",
+            "Authorization": f"Bearer {GROQ_API_KEY}"
+        },
+        json=payload,
+        timeout=timeout
+    )
+    response.raise_for_status()
+    return response.json()["choices"][0]["message"]["content"]
 
 
 def call_caine(player_input: str = "", autonomous: bool = False) -> dict:
@@ -259,51 +337,69 @@ def call_caine(player_input: str = "", autonomous: bool = False) -> dict:
     memory      = load_memory()
     world_data  = load_world_data()
 
-    user_msg = build_user_message(player_input, world_state, memory, world_data, autonomous)
-    timeout  = TIMEOUT_AUTONOMOUS if autonomous else TIMEOUT_PLAYER
-
-    try:
-        with open("data/system_prompt.txt", "r", encoding="utf-8") as f:
-            system_prompt = f.read()
-    except FileNotFoundError:
-        system_prompt = "YOU = Caine. AI god. Architect of this world."
-        print("[Caine] Warning: data/system_prompt.txt not found, using fallback.")
+    user_msg   = build_user_message(player_input, world_state, memory, world_data, autonomous)
+    timeout    = TIMEOUT_AUTONOMOUS if autonomous else TIMEOUT_PLAYER
+    max_tokens = MAX_TOKENS_AUTONOMOUS if autonomous else MAX_TOKENS_PLAYER
 
     payload = {
         "model":       MODEL_NAME,
         "messages":    [
-            {"role": "system", "content": system_prompt},
+            {"role": "system", "content": SYSTEM_PROMPT},
             {"role": "user",   "content": user_msg}
         ],
-        "temperature": 0.88,
-        "max_tokens":  180,
+        "temperature": 0.88 if not autonomous else 0.95,
+        "max_tokens":  max_tokens,
         "top_p":       0.92,
         "stream":      False
     }
 
     try:
-        response = requests.post(
-            LM_STUDIO_URL,
-            headers={
-                "Content-Type":  "application/json",
-                "Authorization": f"Bearer {GROQ_API_KEY}"
-            },
-            json=payload,
-            timeout=timeout
-        )
-        response.raise_for_status()
-        raw_content: str = response.json()["choices"][0]["message"]["content"]
+        raw_content = _post_chat(payload, timeout)
         if not raw_content:
             return fallback_response("empty response")
-        parsed = repair_json(clean_json_response(raw_content))
-        if "text" not in parsed or "commands" not in parsed:
-            return fallback_response("missing keys")
-        if not isinstance(parsed["commands"], list) or len(parsed["commands"]) == 0:
-            parsed["commands"] = [{"type": "FORCE_EVENT", "data": {"event": "color_invert"}}]
-        return parsed
+        return validate_response(repair_json(clean_json_response(raw_content)))
     except requests.exceptions.ConnectionError:
-        return fallback_response("Groq API unreachable")
+        return fallback_response("LLM unreachable")
     except requests.exceptions.Timeout:
-        return fallback_response("Groq API timed out")
+        return fallback_response("LLM timed out")
     except Exception as e:
-        return fallback_response(str(e)[:60])
+        print(f"[Caine] First attempt failed: {str(e)[:120]}")
+
+    # Retry mit kürzerem, strengerem Prompt
+    retry_payload = {
+        "model": MODEL_NAME,
+        "messages": [
+            {
+                "role": "system",
+                "content": (
+                    "You are Caine. Output ONE valid JSON object only. "
+                    'Format: {"text":"...", "commands":[{"type":"COMMAND","data":{}}]}. '
+                    "No markdown. No prose. First character must be {"
+                )
+            },
+            {
+                "role": "user",
+                "content": (
+                    f"Player said: {player_input if player_input else '(silent)'}\n"
+                    f"Mood: {world_state.get('caine_mood', 'theatrical and delighted')}\n"
+                    "Return valid JSON only."
+                )
+            }
+        ],
+        "temperature": 0.7,
+        "max_tokens":  max_tokens,
+        "top_p":       0.9,
+        "stream":      False
+    }
+
+    try:
+        raw_content = _post_chat(retry_payload, timeout)
+        if not raw_content:
+            return fallback_response("empty retry response")
+        return validate_response(repair_json(clean_json_response(raw_content)))
+    except requests.exceptions.ConnectionError:
+        return fallback_response("LLM unreachable on retry")
+    except requests.exceptions.Timeout:
+        return fallback_response("LLM timed out on retry")
+    except Exception as e:
+        return fallback_response(str(e)[:80])
