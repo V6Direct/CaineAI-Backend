@@ -7,7 +7,7 @@ from vision_loader import get_aesthetic_summary
 
 LM_STUDIO_URL = "https://api.groq.com/openai/v1/chat/completions"
 MODEL_NAME    = "llama-3.3-70b-versatile"
-GROQ_API_KEY  = "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"
+GROQ_API_KEY  = ""
 
 TIMEOUT_PLAYER     = 30
 TIMEOUT_AUTONOMOUS = 20
