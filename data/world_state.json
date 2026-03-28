@@ -1,16 +1,16 @@
 {
   "entities": [
     {
-      "name": "Echo Wisp",
-      "style": "dreamlike",
+      "name": "Echo Drone",
+      "style": "glitchy",
       "position": [
         3,
         3
       ]
     },
     {
-      "name": "Fragment Orb",
-      "style": "glitchy",
+      "name": "Neon Wisp",
+      "style": "neon",
       "position": [
         -4,
         2
@@ -150,9 +150,9 @@
     }
   ],
   "environment": {
-    "color": "#202526",
+    "color": "#1A0033",
     "gravity": 1.0,
-    "theme": "Floating Ruins",
+    "theme": "Neon Dreams",
     "light_color": "#00FFCC",
     "light_energy": 3.5
   },
@@ -161,23 +161,344 @@
     "player_can_move": true,
     "chaos_level": 1
   },
-  "events": [],
+  "events": [
+    {
+      "cmd": "SPAWN_PROP",
+      "data": {
+        "type": "box",
+        "pos": [
+          13.42,
+          3.0,
+          7.75
+        ],
+        "size": [
+          0.831703866247349,
+          6.0,
+          0.5615910492909717
+        ],
+        "color": "#00FFCC"
+      }
+    },
+    {
+      "cmd": "SPAWN_PROP",
+      "data": {
+        "type": "box",
+        "pos": [
+          7.75,
+          3.0,
+          13.42
+        ],
+        "size": [
+          0.518828237432702,
+          6.0,
+          0.7044506056150823
+        ],
+        "color": "#00FFCC"
+      }
+    },
+    {
+      "cmd": "SPAWN_PROP",
+      "data": {
+        "type": "box",
+        "pos": [
+          0.0,
+          3.0,
+          15.5
+        ],
+        "size": [
+          0.7235207231590723,
+          6.0,
+          0.4892867342398987
+        ],
+        "color": "#00FFCC"
+      }
+    },
+    {
+      "cmd": "SPAWN_PROP",
+      "data": {
+        "type": "box",
+        "pos": [
+          -7.75,
+          3.0,
+          13.42
+        ],
+        "size": [
+          0.5778043369545395,
+          6.0,
+          0.603323413975828
+        ],
+        "color": "#00FFCC"
+      }
+    },
+    {
+      "cmd": "SPAWN_PROP",
+      "data": {
+        "type": "box",
+        "pos": [
+          -13.42,
+          3.0,
+          7.75
+        ],
+        "size": [
+          0.7455470172766024,
+          6.0,
+          0.8603277006904346
+        ],
+        "color": "#00FFCC"
+      }
+    },
+    {
+      "cmd": "SPAWN_PROP",
+      "data": {
+        "type": "box",
+        "pos": [
+          -15.5,
+          3.0,
+          0.0
+        ],
+        "size": [
+          0.5989661807021776,
+          6.0,
+          0.40451243031569867
+        ],
+        "color": "#00FFCC"
+      }
+    },
+    {
+      "cmd": "SPAWN_PROP",
+      "data": {
+        "type": "box",
+        "pos": [
+          -13.42,
+          3.0,
+          -7.75
+        ],
+        "size": [
+          0.7249114211347842,
+          6.0,
+          0.442603975523974
+        ],
+        "color": "#00FFCC"
+      }
+    },
+    {
+      "cmd": "SPAWN_PROP",
+      "data": {
+        "type": "box",
+        "pos": [
+          -7.75,
+          3.0,
+          -13.42
+        ],
+        "size": [
+          0.5259683227622334,
+          6.0,
+          0.5215321140459581
+        ],
+        "color": "#00FFCC"
+      }
+    },
+    {
+      "cmd": "SPAWN_PROP",
+      "data": {
+        "type": "box",
+        "pos": [
+          -0.0,
+          3.0,
+          -15.5
+        ],
+        "size": [
+          0.5603306873957496,
+          6.0,
+          0.5384815522106026
+        ],
+        "color": "#00FFCC"
+      }
+    },
+    {
+      "cmd": "SPAWN_PROP",
+      "data": {
+        "type": "box",
+        "pos": [
+          7.75,
+          3.0,
+          -13.42
+        ],
+        "size": [
+          0.47915648350333484,
+          6.0,
+          0.8983222597230535
+        ],
+        "color": "#00FFCC"
+      }
+    },
+    {
+      "cmd": "SPAWN_PROP",
+      "data": {
+        "type": "box",
+        "pos": [
+          13.42,
+          3.0,
+          -7.75
+        ],
+        "size": [
+          0.42239572557841,
+          6.0,
+          0.8111493004785092
+        ],
+        "color": "#00FFCC"
+      }
+    },
+    {
+      "cmd": "SPAWN_PROP",
+      "data": {
+        "type": "platform",
+        "pos": [
+          7.31,
+          2.840313483167882,
+          7.31
+        ],
+        "size": [
+          2.0,
+          0.3,
+          2.0
+        ],
+        "color": "#1A0033"
+      }
+    },
+    {
+      "cmd": "SPAWN_LIGHT",
+      "data": {
+        "position": [
+          7.31,
+          4.840313483167882,
+          7.31
+        ],
+        "color": "#00FFCC",
+        "intensity": 1.2,
+        "range": 4.0
+      }
+    },
+    {
+      "cmd": "SPAWN_PROP",
+      "data": {
+        "type": "platform",
+        "pos": [
+          -8.0,
+          1.6510769172920705,
+          -8.0
+        ],
+        "size": [
+          2.0,
+          0.3,
+          2.0
+        ],
+        "color": "#00FFCC"
+      }
+    },
+    {
+      "cmd": "SPAWN_LIGHT",
+      "data": {
+        "position": [
+          -8.0,
+          3.6510769172920705,
+          -8.0
+        ],
+        "color": "#FF00AA",
+        "intensity": 1.2,
+        "range": 4.0
+      }
+    },
+    {
+      "cmd": "CREATE_ENTITY",
+      "data": {
+        "name": "Echo Drone",
+        "style": "glitchy",
+        "position": [
+          3,
+          3
+        ]
+      }
+    },
+    {
+      "cmd": "CREATE_ENTITY",
+      "data": {
+        "name": "Neon Wisp",
+        "style": "neon",
+        "position": [
+          -4,
+          2
+        ]
+      }
+    },
+    {
+      "cmd": "SPAWN_PROP",
+      "data": {
+        "type": "platform",
+        "pos": [
+          -9,
+          11,
+          -1
+        ],
+        "size": [
+          2.0,
+          0.3,
+          2.0
+        ],
+        "color": "#FF00AA"
+      }
+    },
+    {
+      "cmd": "SPAWN_PROP",
+      "data": {
+        "type": "pillar",
+        "pos": [
+          -11,
+          11,
+          -1
+        ],
+        "size": [
+          0.5,
+          4.0,
+          0.5
+        ],
+        "color": "#96CEB4"
+      }
+    },
+    {
+      "cmd": "SPAWN_PROP",
+      "data": {
+        "type": "box",
+        "pos": [
+          -7,
+          15,
+          1
+        ],
+        "size": [
+          1.0,
+          0.2,
+          40.0
+        ],
+        "color": "#ACB3CB"
+      }
+    }
+  ],
   "player_state": {
     "position": [
-      5.28632688522339,
-      12.6970710754395
+      -9.02027320861816,
+      10.9359664916992
     ],
-    "last_input": "s",
+    "last_input": "build me a staircase please",
     "locked": false,
     "lock_duration": 2
   },
-  "caine_mood": "nostalgic and sad",
-  "player_favor": -5,
-  "tick": 431,
+  "caine_mood": "playfully cruel",
+  "player_favor": 2,
+  "tick": 457,
   "active_brief": {
-    "theme": "Floating Ruins",
-    "mood": "dreamlike",
-    "narrative_seed": "Everything here remembers a world that never was\u2014listen closely, and the stones will hum its name."
+    "theme": "Neon Dreams",
+    "mood": "chaotic",
+    "narrative_seed": "Something in the flicker knows your name\u2014don\u2019t let it sync to your rhythm."
   },
   "active_map_id": "neon_circus"
 }
