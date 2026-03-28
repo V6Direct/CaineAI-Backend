@@ -1,4 +1,5 @@
 import asyncio
+import math
 import time
 import random
 import re
@@ -26,41 +27,16 @@ MAP_EVOLVE_MAX = 70
 SPEAK_MIN      = 150
 SPEAK_MAX      = 300
 
+_current_map_brief: dict = {}
 
+
+# ── Lifespan ──────────────────────────────────────────────────────────────────
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     loop = asyncio.get_event_loop()
 
-    # These both run in background — server starts immediately
-    loop.run_in_executor(autonomous_executor, warmup_model)
-    loop.run_in_executor(autonomous_executor, scan_images_folder)
-
-    memory = load_memory()
-    memory["session_start"] = datetime.utcnow().isoformat()
-    save_memory(memory)
-
-    t1 = asyncio.create_task(map_evolution_loop())
-    t2 = asyncio.create_task(autonomous_speak_loop())
-    yield
-    t1.cancel()
-    t2.cancel()
-    for t in [t1, t2]:
-        try:
-            await t
-        except asyncio.CancelledError:
-            pass
-    player_executor.shutdown(wait=False)
-    autonomous_executor.shutdown(wait=False)
-
-
-@asynccontextmanager
-async def lifespan(app: FastAPI):
-    loop = asyncio.get_event_loop()
-
-    # Warm up LLM
     loop.run_in_executor(autonomous_executor, warmup_model)
 
-    # Scan images folder and learn aesthetics
     from vision_loader import scan_images_folder
     loop.run_in_executor(autonomous_executor, scan_images_folder)
 
@@ -82,7 +58,6 @@ async def lifespan(app: FastAPI):
     autonomous_executor.shutdown(wait=False)
 
 
-
 app = FastAPI(title="CaineAI Backend", lifespan=lifespan)
 app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"])
 
@@ -100,7 +75,6 @@ def update_player_profile(text: str):
 
     profile["total_messages"] = profile.get("total_messages", 0) + 1
 
-    # Tone detection
     if any(w in p for w in ["hate","stupid","dumb","boring","bad","ugly","idiot","shut up"]):
         profile["rude_count"] = profile.get("rude_count", 0) + 1
         profile.setdefault("tone_history", []).append("rude")
@@ -119,7 +93,6 @@ def update_player_profile(text: str):
 
     profile["tone_history"] = profile.get("tone_history", [])[-20:]
 
-    # Dominant personality
     counts = {
         "rude":     profile.get("rude_count", 0),
         "friendly": profile.get("friendly_count", 0),
@@ -128,19 +101,16 @@ def update_player_profile(text: str):
     }
     profile["personality"] = max(counts, key=counts.get)
 
-    # Demands tracking
     if any(w in p for w in ["give me","i want","spawn","make","create",
                               "can i have","please give","i need","bring me"]):
         profile.setdefault("demands_made", []).append(text[:60])
         profile["demands_made"] = profile["demands_made"][-10:]
 
-    # Name detection
     name_match = re.search(r"(?:my name is|i am|call me|i'm)\s+([a-zA-Z]+)", p)
     if name_match and not profile.get("name_given"):
         profile["name_given"] = name_match.group(1).capitalize()
         print(f"[Profile] Player name: {profile['name_given']}")
 
-    # Topic tracking
     topic_keywords = [
         "ball","sword","gun","weapon","door","light","dark","color",
         "music","sound","map","floor","sky","entity","mirror","clock",
@@ -156,10 +126,94 @@ def update_player_profile(text: str):
     save_memory(memory)
 
 
-# ── Map evolution ─────────────────────────────────────────────────────────────
+# ── Map generation ────────────────────────────────────────────────────────────
+def _fallback_to_random_preset():
+    """Load a random preset from map_presets.json as a fallback when brief generation fails."""
+    try:
+        presets = load_map_presets().get("presets", [])
+        if not presets:
+            return
+        preset = random.choice(presets)
+        state  = load_world_state()
+        state.setdefault("events", []).append({"cmd": "LOAD_PRESET_MAP", "data": preset})
+        state["entities"]             = preset.get("entities", [])
+        state["environment"]["theme"] = preset.get("theme", {}).get("theme", "circus")
+        state["environment"]["color"] = preset.get("theme", {}).get("color", "#1A0033")
+        state["active_brief"]         = {}
+        save_world_state(state)
+        pending_responses.append({
+            "text": preset.get("caine_intro", "...the world shifts."),
+            "commands": []
+        })
+        print(f"[MapGen] Fallback preset → {preset['id']}")
+    except Exception as e:
+        print(f"[MapGen] Fallback failed: {e}")
+
+
+async def _trigger_new_map():
+    global _current_map_brief
+    from ai_brain import generate_map_brief
+    from map_builder import build_map_from_brief
+    from vision_loader import get_aesthetic_summary
+
+    print("[MapGen] Generating new map brief...")
+    loop  = asyncio.get_event_loop()
+    brief = await loop.run_in_executor(
+        autonomous_executor,
+        lambda: generate_map_brief(get_aesthetic_summary())
+    )
+
+    if not brief:
+        print("[MapGen] Brief failed, using fallback preset")
+        _fallback_to_random_preset()
+        return
+
+    _current_map_brief = brief
+    events = build_map_from_brief(brief)
+
+    state = load_world_state()
+    state["events"]               = events[-20:]
+    state["environment"]["theme"] = brief["theme"]
+    state["environment"]["color"] = brief["color"]
+    state["entities"]             = brief.get("entities", [])
+    state["tick"]                 = state.get("tick", 0)
+    state["active_brief"]         = {
+        "theme":          brief["theme"],
+        "mood":           brief.get("mood", ""),
+        "narrative_seed": brief.get("narrative_seed", "")
+    }
+    save_world_state(state)
+
+    pending_responses.append({
+        "text": brief.get("caine_intro", "...something stirs."),
+        "commands": []
+    })
+    print(f"[MapGen] New map: '{brief['theme']}' — {len(events)} events queued")
+
+
+def _organic_evolve(state: dict, brief: dict):
+    """Small, palette-consistent prop additions between full map regens."""
+    if not brief:
+        return
+    palette = brief.get("palette", ["#440066"])
+    color   = random.choice(palette)
+    r       = random.uniform(4, 12)
+    angle   = math.radians(random.uniform(0, 360))
+    pos     = [round(r * math.cos(angle), 2), 0, round(r * math.sin(angle), 2)]
+    state.setdefault("events", []).append({"cmd": "SPAWN_PROP", "data": {
+        "type":  random.choice(["box", "platform"]),
+        "pos":   pos,
+        "size":  [random.uniform(0.3, 1.2), random.uniform(1.5, 5.0), random.uniform(0.3, 1.2)],
+        "color": color
+    }})
+
+
 async def map_evolution_loop():
-    global autonomous_busy
+    global autonomous_busy, _current_map_brief
     await asyncio.sleep(25)
+
+    await _trigger_new_map()
+
     while autonomous_running:
         interval = random.randint(MAP_EVOLVE_MIN, MAP_EVOLVE_MAX)
         await asyncio.sleep(interval)
@@ -169,71 +223,13 @@ async def map_evolution_loop():
         try:
             state = load_world_state()
             tick  = state.get("tick", 0)
-            evolution_type = random.choice([
-                "add_prop", "add_prop", "add_prop",
-                "change_theme",
-                "spawn_structure",
-                "teleport_to_map" if tick > 5 else "add_prop"
-            ])
 
-            if evolution_type == "add_prop":
-                from data_loader import load_world_data
-                props = load_world_data().get("props", [])
-                if props:
-                    p = random.choice(props)
-                    state.setdefault("events", []).append({
-                        "cmd": "SPAWN_PROP",
-                        "data": {
-                            "type":  p.get("type", "box"),
-                            "pos":   [random.randint(-12, 12), 0, random.randint(-12, 12)],
-                            "size":  p.get("size", [1, 1, 1]),
-                            "color": p.get("color", "#441166")
-                        }
-                    })
-                    print(f"[Map evolve] Prop: {p.get('name')}")
-
-            elif evolution_type == "spawn_structure":
-                state.setdefault("events", []).append({
-                    "cmd": "SPAWN_STRUCTURE",
-                    "data": {
-                        "structure": random.choice(["tower","ring","platform_stack","maze_wall"]),
-                        "position":  [random.randint(-14, 14), 0, random.randint(-14, 14)],
-                        "color":     random.choice(["#330055","#003344","#442200","#004400","#220044"])
-                    }
-                })
-                print("[Map evolve] Structure spawned")
-
-            elif evolution_type == "change_theme":
-                from data_loader import load_world_data
-                themes = load_world_data().get("map_themes", [])
-                if themes:
-                    theme = random.choice(themes)
-                    state["environment"]["color"] = theme.get("color", "#1A0033")
-                    state["environment"]["theme"] = theme.get("name", "circus")
-                    state.setdefault("events", []).append({
-                        "cmd": "CHANGE_THEME",
-                        "data": {
-                            "theme": theme.get("name", "circus"),
-                            "color": theme.get("color", "#1A0033")
-                        }
-                    })
-                    print(f"[Map evolve] Theme → {theme.get('name')}")
-
-            elif evolution_type == "teleport_to_map":
-                presets = load_map_presets().get("presets", [])
-                current = state.get("environment", {}).get("theme", "")
-                others  = [p for p in presets if p.get("name") != current]
-                if others:
-                    preset = random.choice(others)
-                    state.setdefault("events", []).append({"cmd": "LOAD_PRESET_MAP", "data": preset})
-                    state["entities"]             = preset.get("entities", [])
-                    state["environment"]["theme"] = preset.get("theme", {}).get("theme", "circus")
-                    state["environment"]["color"] = preset.get("theme", {}).get("color", "#1A0033")
-                    print(f"[Map evolve] Preset → {preset['id']}")
-
-            state["events"] = state.get("events", [])[-20:]
-            state["tick"]   = tick + 1
-            save_world_state(state)
+            if tick > 0 and tick % 8 == 0:
+                await _trigger_new_map()
+            else:
+                _organic_evolve(state, _current_map_brief)
+                state["tick"] = tick + 1
+                save_world_state(state)
 
         except Exception as e:
             print(f"[Map evolve error] {e}")
@@ -279,7 +275,7 @@ def apply_commands_to_world(commands: list):
         ctype = cmd.get("type", "")
         data  = cmd.get("data", {})
 
-        if ctype == "CREATE_ENTITY":
+        if ctype in ("CREATE_ENTITY", "SPAWN_ENTITY"):
             if len(state["entities"]) < 30:
                 state["entities"].append({
                     "name":     data.get("name", "unknown"),
@@ -290,7 +286,7 @@ def apply_commands_to_world(commands: list):
 
         elif ctype == "DELETE_ENTITY":
             state["entities"] = [
-                e for e in state["entities"] if e.get("name") != data.get("name","")
+                e for e in state["entities"] if e.get("name") != data.get("name", "")
             ]
 
         elif ctype == "CLEAR_ENTITIES":
@@ -298,8 +294,8 @@ def apply_commands_to_world(commands: list):
 
         elif ctype == "MODIFY_ENTITY":
             for entity in state["entities"]:
-                if entity.get("name") == data.get("name",""):
-                    entity[data.get("property","style")] = data.get("value","")
+                if entity.get("name") == data.get("name", ""):
+                    entity[data.get("property", "style")] = data.get("value", "")
 
         elif ctype == "MODIFY_WORLD":
             if data.get("property"):
@@ -335,19 +331,39 @@ def apply_commands_to_world(commands: list):
             try:
                 presets = load_map_presets()
                 preset  = next(
-                    (p for p in presets["presets"] if p["id"] == data.get("map_id","")),
+                    (p for p in presets["presets"] if p["id"] == data.get("map_id", "")),
                     None
                 )
                 if preset:
                     state.setdefault("events", []).append({"cmd": "LOAD_PRESET_MAP", "data": preset})
                     state["entities"]             = preset.get("entities", [])
-                    state["environment"]["theme"] = preset.get("theme", {}).get("theme","circus")
-                    state["environment"]["color"] = preset.get("theme", {}).get("color","#1A0033")
+                    state["environment"]["theme"] = preset.get("theme", {}).get("theme", "circus")
+                    state["environment"]["color"] = preset.get("theme", {}).get("color", "#1A0033")
                     print(f"[Teleport] → {data.get('map_id')}")
             except Exception as e:
                 print(f"[Preset error] {e}")
 
-        elif ctype in ["SPAWN_STRUCTURE","BUILD_MAP","CLEAR_MAP","SPAWN_PROP","RESHAPE_FLOOR"]:
+        elif ctype == "SPAWN_NPC":
+            if len(state.get("npcs", [])) < 10:
+                state.setdefault("npcs", []).append({
+                    "name":     data.get("name", "unknown"),
+                    "role":     data.get("role", "wanderer"),
+                    "position": data.get("position", [0, 0, 0]),
+                    "color":    data.get("color", "#880088"),
+                    "dialogue": data.get("dialogue", ""),
+                    "action":   "idle",
+                    "id":       f"npc_{int(time.time() * 1000)}"
+                })
+            state.setdefault("events", []).append({"cmd": "SPAWN_NPC", "data": data})
+
+        elif ctype == "COMMAND_NPC":
+            for npc in state.get("npcs", []):
+                if npc.get("name") == data.get("name", ""):
+                    npc["action"] = data.get("action", "idle")
+            state.setdefault("events", []).append({"cmd": "COMMAND_NPC", "data": data})
+
+        elif ctype in ["SPAWN_STRUCTURE", "BUILD_MAP", "CLEAR_MAP", "SPAWN_PROP",
+                       "RESHAPE_FLOOR", "SPAWN_PARTICLE", "SPAWN_LIGHT"]:
             state.setdefault("events", []).append({"cmd": ctype, "data": data})
 
     state["events"] = state.get("events", [])[-20:]
@@ -357,14 +373,34 @@ def apply_commands_to_world(commands: list):
 # ── Memory ────────────────────────────────────────────────────────────────────
 def record_interaction(player_input: str, response: dict):
     memory = load_memory()
+    text = response.get("text", "")
+
+    # Detect character breaks
+    broke_character = any(phrase in text.lower() for phrase in [
+        "i'm an ai", "i am an ai", "i'm a language model", "as an ai",
+        "i was created", "i don't have feelings", "i cannot",
+        "i'm here to help", "how can i assist", "certainly!", "of course!",
+        "great question", "i'd be happy"
+    ])
+
     memory["interactions"].append({
-        "time":   datetime.utcnow().isoformat(),
-        "player": player_input[:100],
-        "caine":  response.get("text","")[:120]
+        "time":            datetime.utcnow().isoformat(),
+        "player":          player_input[:100],
+        "caine":           text[:120],
+        "broke_character": broke_character
     })
+
+    if broke_character:
+        memory.setdefault("character_breaks", []).append({
+            "trigger": player_input[:60],
+            "bad_response": text[:80]
+        })
+        memory["character_breaks"] = memory["character_breaks"][-10:]
+
+    # rest of your existing code...
     memory["world_changes"].append({
         "time":     datetime.utcnow().isoformat(),
-        "commands": [c.get("type") for c in response.get("commands",[])]
+        "commands": [c.get("type") for c in response.get("commands", [])]
     })
     memory["interactions"]  = memory["interactions"][-40:]
     memory["world_changes"] = memory["world_changes"][-40:]

@@ -1,21 +1,80 @@
 [
   {
-    "source": "red_white_circus_outside.png",
-    "mood": "urgent and primal",
-    "colors": [
-      "#CC0000",
-      "#880000",
-      "#FF0000",
-      "#CC0033"
+    "palette": [
+      "#1A0033",
+      "#FF00AA",
+      "#00FFCC"
     ],
-    "shapes": [],
-    "lighting": "ambient diffused",
-    "keywords": [
-      "red",
-      "white",
-      "circus",
-      "outside"
+    "mood": "oppressive neon",
+    "structures": [
+      "tall thin spires",
+      "floating ring platforms"
     ],
-    "summary": "Filename-learned: red white circus outside"
+    "prop_ideas": [
+      "glowing pillar",
+      "suspended cube"
+    ],
+    "layout_hint": "vertical emphasis, sparse ground, dense upper layer",
+    "color_theme": "purple",
+    "style": "neon",
+    "source": "reference1.jpg"
+  },
+  {
+    "palette": [
+      "#392D1F",
+      "#ACB3CB",
+      "#BBC1D5"
+    ],
+    "mood": "unknown",
+    "structures": [],
+    "prop_ideas": [],
+    "layout_hint": "",
+    "color_theme": "dark",
+    "style": "surreal",
+    "source": "red_white_circus_outside.png"
+  },
+  {
+    "palette": [
+      "#392D1F",
+      "#ACB3CB",
+      "#BBC1D5"
+    ],
+    "mood": "dreamlike",
+    "structures": [
+      "#hex1",
+      "#hex2",
+      "#hex3"
+    ],
+    "prop_ideas": [
+      "#hex1",
+      "#hex2",
+      "#hex3"
+    ],
+    "layout_hint": "Spatial arrangement of the circus tent and surrounding structures.",
+    "color_theme": "cartoon",
+    "style": "surreal",
+    "source": "red_white_circus_outside.png"
+  },
+  {
+    "palette": [
+      "#010103",
+      "#080405",
+      "#150E0C"
+    ],
+    "mood": "dreamlike",
+    "structures": [
+      "#hex1",
+      "#hex2",
+      "#hex3"
+    ],
+    "prop_ideas": [
+      "#hex1",
+      "#hex2",
+      "#hex3"
+    ],
+    "layout_hint": "3D character",
+    "color_theme": "cartoon",
+    "style": "surreal",
+    "source": "image.png"
   }
 ]
