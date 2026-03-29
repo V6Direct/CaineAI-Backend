@@ -8,14 +8,16 @@ from concurrent.futures import ThreadPoolExecutor
 from contextlib import asynccontextmanager
 from datetime import datetime
 from typing import Optional
+import os
+from pydantic import Field
+from dotenv import load_dotenv
+load_dotenv()
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
 from ai_brain import call_caine, warmup_model
-from data_loader import load_world_state, save_world_state, load_memory, save_memory, load_map_presets
-
 from data_loader import load_world_state, save_world_state, load_memory, save_memory, load_map_presets, load_lore
 
 
@@ -37,7 +39,7 @@ _current_map_brief: dict = {}
 # ── Lifespan ──────────────────────────────────────────────────────────────────
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    loop = asyncio.get_event_loop()
+    loop = asyncio.get_running_loop()
     loop.run_in_executor(autonomous_executor, warmup_model)
 
     from vision_loader import scan_images_folder
@@ -66,19 +68,25 @@ memory["session_start"] = datetime.utcnow().isoformat()
 save_memory(memory)
 
 app = FastAPI(title="CaineAI Backend", lifespan=lifespan)
-app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"])
+_cors_origins = os.getenv("CORS_ALLOWED_ORIGINS", "*").split(",")
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=_cors_origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 # ── Models ────────────────────────────────────────────────────────────────────
 class PlayerInput(BaseModel):
-    text: str           = ""
-    position: list      = [0, 0]
-    # ↓ NEW: Godot sends these back so backend stays in sync
-    caine_mood: Optional[str] = None
-    player_favor: Optional[int] = None
-    active_map_id: Optional[str] = None
-    npcs: Optional[list] = None
-    entities: Optional[list] = None
+    text:          str            = Field(default="", max_length=500)
+    position:      list           = Field(default=[0, 0])
+    caine_mood:    Optional[str]  = Field(default=None, max_length=50)
+    player_favor:  Optional[int]  = Field(default=None, ge=-10, le=10)
+    active_map_id: Optional[str]  = Field(default=None, max_length=100)
+    npcs:          Optional[list] = None
+    entities:      Optional[list] = None
 
 
 # ── Client state sync ─────────────────────────────────────────────────────────

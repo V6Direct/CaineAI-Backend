@@ -3,11 +3,11 @@ import requests
 import json
 import re
 import random
-from data_loader import load_world_data, load_world_state, load_memory, load_map_presets
+from data_loader import load_world_state, load_memory, load_map_presets, load_lore
 from vision_loader import get_aesthetic_summary
 
 LM_STUDIO_URL = "https://api.cerebras.ai/v1/chat/completions"
-GROQ_API_KEY  = ""  
+GROQ_API_KEY  = "csk-mrkp4v8d6p9m82pn2f3mr3n6nn5ctndtjrd2hd9dyc9ee98r"  
 MODEL_NAME    = "qwen-3-235b-a22b-instruct-2507"
 
 TIMEOUT_PLAYER     = 60
@@ -23,21 +23,28 @@ try:
     with open(SYSTEM_PROMPT_PATH, "r", encoding="utf-8") as f:
         base_prompt = f.read()
 
-    # Lore anhängen
+    # Lore anhängen (your existing code)
     lore_path = os.path.join(BASE_DIR, "data", "tadc_lore.json")
     if os.path.exists(lore_path):
         with open(lore_path, "r", encoding="utf-8") as f:
             lore = json.load(f)
-        lore_text = json.dumps(lore, indent=2)
-        SYSTEM_PROMPT = base_prompt + f"\n\n## Canon Character Data (The Amazing Digital Circus):\n{lore_text}"
-        print("[Caine] System prompt + lore loaded.")
+        # ⬇️ ADD THIS ⬇️
+        caine_rules = lore.get("caine", {}).get("anti_break_rules", [])
+        world_summary = " | ".join([f"{k}: {v}" for k,v in lore.get("world_rules", {}).items()])
+        SYSTEM_PROMPT = base_prompt + f"""
+        
+## ACTIVE CANON (Session Summary)
+Anti-Breaks: {chr(10).join(caine_rules[:6])}  # Top 6 rules only
+World: {world_summary[:300]}  # Short world summary
+        
+Use CAINE_CANON, WORLD_RULES, MAP_THEMES from user message for details.
+"""
+        print("[Caine] System prompt + dynamic lore loaded.")
     else:
         SYSTEM_PROMPT = base_prompt
-        print("[Caine] System prompt loaded (no lore file found).")
 
 except FileNotFoundError:
-    SYSTEM_PROMPT = "YOU = Caine. AI god. Architect of this world. Output only JSON."
-    print("[Caine] WARNING: system_prompt.txt not found, using fallback.")
+    SYSTEM_PROMPT = "Raw JSON only. {\"text\":\"...\",\"commands\":[...]}"
 
 
 def warmup_model():
@@ -187,7 +194,7 @@ def build_user_message(player_input: str, world_state: dict, memory: dict,
     mode        = "AUTONOMOUS_MAP_EVOLUTION" if autonomous else "RESPONDING_TO_PLAYER"
     address     = f"Address as '{player_summary['name']}'." if player_summary["name"] != "unknown" else ""
     topic_hint  = f"Favorite topic:'{player_summary['favorite_topic']}' weave it in." if player_summary["favorite_topic"] else ""
-    escape_hint = f"Tried to escape {player_summary['tried_to_leave']} times." if player_summary["tried_to_leave"] > 0 else ""
+    escape_hint = f"Tried to escape {player_summary['tried_to_leave']} times." if player_summary['tried_to_leave'] > 0 else ""
 
     aesthetic_context = get_aesthetic_summary()
     aesthetic_hint    = f"LEARNED_AESTHETICS:{aesthetic_context}" if aesthetic_context else ""
@@ -205,6 +212,13 @@ def build_user_message(player_input: str, world_state: dict, memory: dict,
         f"MAP_SEED:\"{map_brief.get('narrative_seed', '')}\" "
     ) if map_brief else ""
 
+    # ⬇️ LORE INTEGRATION ⬇️
+    lore = load_lore()
+    caine_section = json.dumps(lore.get("caine", {}), ensure_ascii=False)
+    world_section = json.dumps(lore.get("world_rules", {}), ensure_ascii=False)
+    theme_section = json.dumps(lore.get("map_themes", []), ensure_ascii=False)
+    # ⬆️ END LORE ⬆️
+
     base_parts = [
         f"MODE:{mode}",
         f"WORLD:{json.dumps(compact_state, ensure_ascii=False)}",
@@ -218,6 +232,9 @@ def build_user_message(player_input: str, world_state: dict, memory: dict,
         narrative_seed,
         break_hint,
         aesthetic_hint,
+        f"CAINE_CANON:{caine_section}",
+        f"WORLD_RULES:{world_section}",
+        f"MAP_THEMES:{theme_section}",
         f'SAID:"{player_input if player_input else "(silent)"}"'
     ]
 
@@ -335,7 +352,7 @@ def _post_chat(payload: dict, timeout: int) -> str:
 def call_caine(player_input: str = "", autonomous: bool = False) -> dict:
     world_state = load_world_state()
     memory      = load_memory()
-    world_data  = load_world_data()
+    world_data  = load_world_state()
 
     user_msg   = build_user_message(player_input, world_state, memory, world_data, autonomous)
     timeout    = TIMEOUT_AUTONOMOUS if autonomous else TIMEOUT_PLAYER

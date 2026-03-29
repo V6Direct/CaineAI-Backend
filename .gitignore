@@ -1,0 +1,27 @@
+# Secrets
+.env
+.env.*
+!.env.example
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.venv/
+venv/
+*.egg-info/
+dist/
+build/
+
+# Runtime data — niemals ins Repo
+data/world_state.json
+data/memory.json
+data/images/
+
+# IDE
+.vscode/
+.idea/
+
+# Logs
+*.log
